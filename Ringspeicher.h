@@ -4,7 +4,13 @@
 
 typedef struct ringspeicher_t ringspeicher_t; 
 typedef ringspeicher_t* ringspeicher_handle_t; 
+/*
+An opaque pointer is one in which no details are revealed of the underlying data 
+Hides the encapsulated data and makes it safe
 
+typedef ringspeicher_t* ringspeicher_handle_t; 
+
+*/
 
 
 ringspeicher_handle_t ringspeicher_init(uint8_t* buffer, size_t size ); 
@@ -18,7 +24,7 @@ void ringspeicher_reset (ringspeicher_handle_t rspeicher);
 void ringspeicher_put_override (ringspeicher_handle_t rspeicher, uint8_t data); 
 
 
-void ringspeicher_put_ignore (ringspeicher_handle_t rspeicher, uint8_t data); 
+int ringspeicher_put_ignore (ringspeicher_handle_t rspeicher, uint8_t data); 
 
 
 int ringspeicher_get_value(ringspeicher_handle_t, uint8_t* data); 
