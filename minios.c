@@ -2,7 +2,7 @@
 
 
 static OS_struct befehl_array[OS_MAX_BEFEHLE_NUM]  //Variablen und Informatinen für einzelne Befehle
-static uint8_t befehl_nummer = 0u  // Anzahl der regestierte Befehle
+static uint8_t befehl_nummer = 0  // Anzahl der regestierte Befehle
 
 
 
@@ -35,7 +35,7 @@ OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_Sta
 		befehl_array[befehl_nummer].function = function;  // befehl_array ist array von struct
 		befehl_array[befehl_nummer].periodendauer = periodendauer; 
 		befehl_array[befehl_nummer].state = dstate; 
-		befehl_array[befehl_nummer].zeit = 1u; 
+		befehl_array[befehl_nummer].zeit = 1; 
 		befehl_nummer++; 
 		ret = Erfolgreich; 
 
@@ -73,14 +73,14 @@ OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_Sta
 
 void  OS_Befehltimer(void)
 {
-	for(uint8_t i = 0u, i <befehl_nummer; i++)
+	for(uint8_t i = 0; i <befehl_nummer; i++)
 	{
 		if(SUSPENDED != befehl_array[i].state)
 		{
 
 			if(befehl_array[i].periodendauer <= befehl_array[i].zeit)
 			{
-				befehl_array[].zeit = 1u; 
+				befehl_array[].zeit = 1; 
 				befehl_array[].state = READY; 
 
 

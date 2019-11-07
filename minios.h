@@ -20,13 +20,6 @@ This is a Non Premeptive OS. It just means that there is no Interrupt in this ti
 
 typedef void (*fncPtr) (void);    // Funktionenzeiger um Befehle zu registiren
 
-typedef enum
-{
-	BLOCKED = 0;  // Hier wird  au fden Timer gewartet. 
-	READY,        // Hier 
-	SUSPENDED    // OS wird suspende
-} OS_State; 
-
 
 typedef struct
 {
@@ -36,6 +29,15 @@ typedef struct
 	OS_State state;  //Befehlstatus
 
 } OS_Struct; 
+
+typedef enum
+{
+	BLOCKED = 0;  // Hier wird  au fden Timer gewartet. 
+	READY,        // Hier 
+	SUSPENDED    // OS wird suspende
+} OS_State; 
+
+
 
 
 typedef enum 
@@ -59,15 +61,20 @@ void OS_Befehlausfueheren(void);
 
 // these methods might not be necessary for my use
 
+/*
 OS_State OS_Befehlstaterueckgabe(uint8_t befehlnummer ); 
 uint8_t OS_Periodendauer(uint8_t befehlnummer); 
 uint8_t OS_Zeit(uint8_t befehlnummer);
 
 
 /* Funktionen die die werte setzen */
+/*
 void OS_Setbefehlstaterueckgabe(uint8_t befehlnummer, OS_State neu_state); 
 void OS_Setperiodendauer(uint8_t befehlnummer, uint8_t neu_periodendauer); 
 void OS_Setzeit(uint8_t befehlnummer, uint8_t neu_zeit)
+
+*/
+
 
 
 #endif

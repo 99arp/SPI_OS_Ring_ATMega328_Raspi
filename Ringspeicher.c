@@ -7,13 +7,28 @@
 
 struct ringspeicher_t  //_t jsut means its "user defined typ
 {
-	uint8_t* buffer;   
-	size_t head;  //index for head of the buffer realisd in array
-	size_t tail;  //index for tail of pointer
-	size_t max;   //max capacity of the pointer, this is defined during ringspeicher_int through size argument
+	uint8_t* buffer;   // die gespeicherte Daten
+	size_t head;  // Speicher Anfang
+	size_t tail;  // Speicher Ende
+	size_t max;   //Max Größe vom Speicher, definiert in ringspeicher_init()
 	bool full;   // ist der Ringspeicher voll?
 	
 };
+
+
+
+ringspeicher_handle_t ringspeicher_init(uint8_t* buffer, size_t size)
+{
+
+	ringspeicher_handle_t rspeicher = malloc(sizeof(ringspeicher_t));  // create the pointer data type with malloc and assign the required memory
+
+	rspeicher-> buffer = buffer; 
+	rspeicher-> max = size; 
+	ringspeicher_reset (rspeicher); 
+	return rspeicher; 
+
+
+}
 
 
 static void  zeiger_vor(ringspeicher_handle_t rspeicher)   //move the pointer vorwärts if new element is added
@@ -40,18 +55,7 @@ static void zeiger_rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 }
 
 
-ringspeicher_handle_t ringspeicher_init(uint8_t* buffer, size_t size)
-{
 
-	ringspeicher_handle_t rspeicher = malloc(sizeof(ringspeicher_t));  // create the pointer data type with malloc and assign the required memory
-
-	rspeicher-> buffer = buffer; 
-	rspeicher-> max = size; 
-	ringspeicher_reset (rspeicher); 
-	return rspeicher; 
-
-
-}
 
 void ringspeicher_klaeren (ringspeicher_handle_t rspeicher)
 {
