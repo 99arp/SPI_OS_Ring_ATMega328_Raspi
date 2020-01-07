@@ -1,53 +1,56 @@
-#include "minos.h"
+#include <stdint.h>
+#include "os.h"
 
 
-static OS_struct befehl_array[OS_MAX_BEFEHLE_NUM]  //Variablen und Informatinen für einzelne Befehle
-static uint8_t befehl_nummer = 0  // Anzahl der regestierte Befehle
+static OS_Struct befehl_array[OS_MAX_BEFEHLE_NUM] ; //Variablen und Informatinen für einzelne Befehle
+static uint8_t befehl_nummer = 0; // Anzahl der regestierte Befehle
+
+
 
 
 
 /*--------------+-----------------------------------------------------------+
 | Name         | OS_Befehlgenerieren                                        |
 +--------------+------------------------------------------------------------+
-| Beschreibung |  Registreirt die Befehle, überprüft ob fehler vorliegt     |
-|              |  Parameter: fncPtr Befehl, uint8_t periodendauer
+| Beschreibung |  Registriert die Befehle, überprüft ob fehler vorliegt     |
+|              |  Parameter: fncPtr* Befehl, uint8_t periodendauer
 |              |  Rückgabewert: OS_Rueckmeldung  |
 +--------------+-----------------------------------------------------------+
 |Autor         |  Prakash Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
-| Notes        | Version 1.0 -- 31.10.2019   
-|              | Es wurden verschiedne Tutorials zur Hilfe genommnen 
-|    		   | Verletzungen des Copyright sind nicht beabsichtigt. 
+| Notes        | Version 1.0 -- 31.10.2019
+|              | Es wurden verschiedne Tutorials zur Hilfe genommnen
+|    		   | Verletzungen des Copyright sind nicht beabsichtigt.
 +--------------+-----------------------------------------------------------*/
 
 
 OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_State dstate )
 {
-	OS_Rueckmeldung ret = Default;
+    OS_Rueckmeldung ret = Default;
 
-	bool richtigkeit = (!( NULL == befehl_array)  //überprüft ob die richtige befehl geneiert wird
-						  && (OS_MIN_ZEIT > periodendauer ||  OS_MAX_ZEIT < periodendauer )
-						  && (OS_MAX_BEFEHLE_NUM <= befehl_nummer)); 
+    bool richtigkeit = (!( NULL == befehl_array)  //überprüft ob die richtige befehl geneiert wird
+                        && (OS_MIN_ZEIT > periodendauer ||  OS_MAX_ZEIT < periodendauer )
+                        && (OS_MAX_BEFEHLE_NUM <= befehl_nummer));
 
-	if(richitg)
-	{
+    if(richtigkeit)
+    {
 
-		befehl_array[befehl_nummer].function = function;  // befehl_array ist array von struct
-		befehl_array[befehl_nummer].periodendauer = periodendauer; 
-		befehl_array[befehl_nummer].state = dstate; 
-		befehl_array[befehl_nummer].zeit = 1; 
-		befehl_nummer++; 
-		ret = Erfolgreich; 
+        befehl_array[befehl_nummer].function = Befehl;  // befehl_array ist array von struct
+        befehl_array[befehl_nummer].periodendauer = periodendauer;
+        befehl_array[befehl_nummer].state = dstate;
+        befehl_array[befehl_nummer].zeit = 1;
+        befehl_nummer++;
+        ret = Erfolgreich;
 
 
-	}
-	else
-	{
-		ret = Fehlerhaft; 
-	}
-	return ret; 
+    }
+    else
+    {
+        ret = Fehlerhaft;
+    }
+    return ret;
 
-			    
+
 
 
 
@@ -66,35 +69,35 @@ OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_Sta
 +--------------+-----------------------------------------------------------+
 |Autor         |  Prakash Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
-| Notes        | Version 1.0 -- 31.10.2019   
-|              | Es wurden verschiedne Tutorials zur Hilfe genommnen 
-|    		   | Verletzungen des Copyright sind nicht beabsichtigt. 
+| Notes        | Version 1.0 -- 31.10.2019
+|              | Es wurden verschiedne Tutorials zur Hilfe genommnen
+|    		   | Verletzungen des Copyright sind nicht beabsichtigt.
 +--------------+-----------------------------------------------------------*/
 
 void  OS_Befehltimer(void)
 {
-	for(uint8_t i = 0; i <befehl_nummer; i++)
-	{
-		if(SUSPENDED != befehl_array[i].state)
-		{
+    for(uint8_t i = 0; i <befehl_nummer; i++)
+    {
+        if(SUSPENDED != befehl_array[i].state)
+        {
 
-			if(befehl_array[i].periodendauer <= befehl_array[i].zeit)
-			{
-				befehl_array[].zeit = 1; 
-				befehl_array[].state = READY; 
-
-
-			}
-
-			else
-			{
-				befehl_array[i].zeit++; 
-			}
-
-		}
+            if(befehl_array[i].periodendauer <= befehl_array[i].zeit)
+            {
+                befehl_array[i].zeit = 1;
+                befehl_array[i].state = READY;
 
 
-	}
+            }
+
+            else
+            {
+                befehl_array[i].zeit++;
+            }
+
+        }
+
+
+    }
 
 
 }
@@ -107,22 +110,22 @@ void  OS_Befehltimer(void)
 +--------------+-----------------------------------------------------------+
 |Autor         |  Prakash Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
-| Notes        | Version 1.0 -- 31.10.2019   
-|              | Es wurden verschiedne Tutorials zur Hilfe genommnen 
-|    		   | Verletzungen des Copyright sind nicht beabsichtigt. 
+| Notes        | Version 1.0 -- 31.10.2019
+|              | Es wurden verschiedne Tutorials zur Hilfe genommnen
+|    		   | Verletzungen des Copyright sind nicht beabsichtigt.
 +--------------+-----------------------------------------------------------*/
 
 void OS_Befehlausfueheren(void)
 {
-	for(uint8_t i = 0; i < befehl_nummer; i++)
-	{
-		if(READY == befehl_array[i].state)
-		{
-			befehl_array[i].function(); 
-			befehl_array[i].state = BLOCKED; 
-		}
+    for(uint8_t i = 0; i < befehl_nummer; i++)
+    {
+        if(READY == befehl_array[i].state)
+        {
+            befehl_array[i].function();
+            befehl_array[i].state = BLOCKED;
+        }
 
-	}
+    }
 
 }
 
