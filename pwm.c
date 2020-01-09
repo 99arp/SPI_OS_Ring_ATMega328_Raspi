@@ -1,7 +1,13 @@
 
 #include <avr/io.h>
 #include "pwm.h"
-#include "enmus.h"
+
+/*
+16 bit PWM Beispiel
+https://sites.google.com/site/qeewiki/books/avr-guide/pwm-on-the-atmega328 
+
+
+*/
 
 enum Prescaler_Value Prescale_Calculator(char c)
  {
@@ -51,7 +57,7 @@ enum Selected_Kanal Kanal_Select (char c)
 
 }
 
- void Set_Frequency(char  Telegramm[] ){  /*minimum working  example on adc.h" */
+ void Pwm_Init_And_Set_Frequency(char  Telegramm[] ){  /*minimum working  example on adc.h" */
 
  	char  Prescaler_From_Telegramm = Telegramm[2]; 
  	enum Prescaler_Value Prescaler = Prescale_Calculator(Prescaler_From_Telegramm)
@@ -64,77 +70,54 @@ enum Selected_Kanal Kanal_Select (char c)
  		case(Kanal1):
  		{
  			DDRD |= (1 << PD5 )  //PD5 als Ausgang
- 			OCR0B = 0;
- 			TCNT0 = 0;
- 			switch(Prescaler):
- 			{
- 				case(Prescaler1):
- 								{
+ 			OCR0B = 0;            // Register, in dem Vergleichwert gespeichert wird. in Setpwm einstellbar
+ 			TCNT0 = 0;            // Counter Value, initialiest null. 
+ 			TCCR0A |= (1 << COM0B1); // Non-inverting mode. Pulse happens at the beginning of the period. 
+ 			TCCR0A |= (1 << WGM01 )| (1 << WGM00 ); // set fast PWM Mode WGM02 is 0 by Default. 
+ 		}break; 
 
-
- 								}break; 
- 				case(Prescaler8):
- 								{
-
-
- 								}break; 
-
- 				case(Prescaler64):
- 								{
-
- 								}break;
- 				case(Prescaler256):
- 								{
-
- 								}break; 								
- 				case(Prescaler1024):
- 								{
-
- 								}break;
- 				default:
- 						return 0; 
-
- 			}break; 
- 			case(Kanal2):
+ 		case(Kanal2):
  		{
  			DDRD |= (1 << PD6 )  //PD6 als Ausgang
  			OCR0B = 0;
  			TCNT0 = 0;
+ 			TCCR0B |= (1 << COM0A1); // Non-inverting mode. Pulse happens at the beginning of the period. 
+ 			TCCR0A |= (1 << WGM01 )| (1 << WGM00 ); // set fast PWM Mode WGM02 is 0 by Default. 
+ 		}break; 
+ 		default: 
+ 			return 0; 
+
  			switch(Prescaler):
  			{
  				case(Prescaler1):
  								{
+ 									TCCR0B |= (0 << CS02) | (0 << CS01) | (1 << CS00); 
+
 
 
  								}break; 
  				case(Prescaler8):
  								{
-
+ 									TCCR0B |= (0 << CS02) | (1 << CS01) | (0 << CS00);  // Table for prescaler value sehen
 
  								}break; 
 
  				case(Prescaler64):
  								{
-
+ 									TCCR0B |= (0 << CS02) | (1 << CS01) | (1 << CS00);
  								}break;
  				case(Prescaler256):
  								{
-
+ 									TCCR0B |= (1 << CS02) | (0 << CS01) | (0 << CS00);
  								}break; 								
  				case(Prescaler1024):
  								{
-
+ 									TCCR0B |= (1 << CS02) | (0 << CS01) | (1 << CS00);
  								}break;
  				default:
  						return 0; 
 
- 			}break; 
- 			
- 		
-
- 		}
- 		default:
- 			return 0; 
+ 			}
  	}
 
 
@@ -142,3 +125,29 @@ enum Selected_Kanal Kanal_Select (char c)
 
 
  }
+
+ void Set_Pwm(char Telegramm[]) {
+	char dutyCycle = Telegramm[2];
+	char Kanal_From_Telegramm = Telegramm[1]; 
+	
+
+
+	if(Kanal_From_Telegramm == 1) {			// Kanal 1 Possible becasue 0x01 = int 1 
+		OCR0B = (255/100)*dutyCycle;
+		}
+
+	if(Kanal_From_Telegramm == 2) {			// Kanal 2
+		OCR0A = (255/100)*dutyCycle;
+		}
+	}
+
+void Pwm_Off(char Telegramm[]) {
+	if(Kanal_From_Telegramm == 1) {			// Kanal 1
+		DDRD &= ~(1 << PD5);
+		TCCR0A &= ~(1 << COM0B1);
+		}
+	if(Kanal_From_Telegramm == 2) {			// Kanal 2
+		DDRD &= ~(1 << PD5);
+		TCCR0A &= ~(1 << COM0A1);
+		}
+	}

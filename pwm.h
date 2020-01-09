@@ -45,10 +45,10 @@ enum Prescaler_Value Prescale_Calculator(char c);
 enum DutyCycle_Value DutyCycle(char c);
 enum  Selected_Kanal Kanal_Select (char c); 
 
-void Set_Frequency(char receivedData[]);
-void Pwm_Init
-void Set_Pwm(char receivedData[]);
-void Pwm_Off(char receivedData[]);
+void Pwm_Init_And_Set_Frequency(char Telegramm[]);
+
+void Set_Pwm(char Telegramm[]);
+void Pwm_Off(char Telegramm[]);
 
  
 #endif // Ende pwm.h

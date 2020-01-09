@@ -1,7 +1,7 @@
 
 
 
-
+typedef int(*fptr)(); 
 
 typedef enum  Auszufuehrende_Funktion {
 
@@ -18,7 +18,7 @@ typedef enum  Auszufuehrende_Funktion {
 
 
 
-Auszufuehrende_Funktion char_analyser(char c);
+fptr Telegramm_Function_Assigner(char c);
 
 
 
