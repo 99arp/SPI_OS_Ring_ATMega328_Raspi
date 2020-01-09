@@ -13,7 +13,7 @@ typedef enum Prescaler_Value{
 	ERROR = 0
 
 
-} Prescaler_value; 
+} Prescaler_Value; 
 
 typedef enum DutyCycle_Value{
 
@@ -30,7 +30,7 @@ typedef enum DutyCycle_Value{
 	
 
 
-} DutyCycle_value; 
+} DutyCycle_Value; 
 
 typedef enum Selected_Kanal {
 
@@ -38,7 +38,7 @@ typedef enum Selected_Kanal {
 	Kanal2 = 2, 
 	ERROR = 0
 
-}Selected_kanal; 
+}Selected_Kanal; 
 
 
 enum Prescaler_Value Prescale_Calculator(char c);
@@ -47,7 +47,7 @@ enum  Selected_Kanal Kanal_Select (char c);
 
 void Pwm_Init_And_Set_Frequency(char Telegramm[]);
 
-void Set_Pwm(char Telegramm[]);
+void Pwm_On(char Telegramm[]);
 void Pwm_Off(char Telegramm[]);
 
  

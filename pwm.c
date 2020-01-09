@@ -25,7 +25,7 @@ enum Prescaler_Value Prescale_Calculator(char c)
  	}
  }
 
- enum DutyCycle_value DutyCycle(char c)
+ enum DutyCycle_Value DutyCycle(char c)
  {
 
  	switch (c)
@@ -126,7 +126,7 @@ enum Selected_Kanal Kanal_Select (char c)
 
  }
 
- void Set_Pwm(char Telegramm[]) {
+ void Pwm_On(char Telegramm[]) {
 	char dutyCycle = Telegramm[2];
 	char Kanal_From_Telegramm = Telegramm[1]; 
 	

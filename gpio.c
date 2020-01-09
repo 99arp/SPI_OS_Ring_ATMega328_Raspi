@@ -50,7 +50,7 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 	}
 }
 
-	void Pin_Mode(char Telegramm[])
+	void Pin_Init(char Telegramm[])
 	{
 
 		enum  Mode Output_Input = Pin_Function(Telegramm[1]);

@@ -17,7 +17,7 @@ typedef enum Pin_Number{
 	PD7_ = 13 
 
 
-} DutyCycle_value; 
+} Pin_Number; 
 
 
 typedef enum Mode {
@@ -36,7 +36,7 @@ enum PinNumber Pin(char c);
 enum Mode Pin_Function(char c); 
 enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c); 
 
-void Pin_Mode(char Telegramm[]); 
+void Pin_Init(char Telegramm[]); 
 void Pin_Manipulation(char Telegramm[]); 
 int Read_Single_Pin(char  Telegramm[] )
 
