@@ -1,8 +1,8 @@
 
 
 
-typedef int(*fptr)(); 
-
+typedef void(* fptr)(char Telegramm[]); 
+/*
 typedef enum  Auszufuehrende_Funktion {
 
     	IO_Init,
@@ -14,7 +14,7 @@ typedef enum  Auszufuehrende_Funktion {
         ADC_on,
         ERROR = 100
 
-}Auszufuehrende_Funktion;
+}Auszufuehrende_Funktion; */
 
 
 

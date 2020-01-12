@@ -3,16 +3,16 @@
 
 enum Mode Pin_Function(char c){
 
-	switch(c):
+	switch(c)
 	{
 		case(0x08): return Input;//   0x08  Definiert in Kommunikationsprotokoll
 		case(0x80): return Output; // 0x80 Definiert in Kommunikationsprotokoll
 		default: return 0; 
 	}
 }
-enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c)(char c){
+enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c){
 
-	switch(c):
+	switch(c)
 	{
 		case(0x08): return Set;// Pins Setzen 
 		case(0x80): return Reset; // Pins Zuruecksetzen
@@ -20,9 +20,9 @@ enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c)(char c){
 	}
 }
 	
-enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two different switch case. 
-	if(c[2])
-	switch(c[2]):
+enum Pin_Number Pin(char Telegramm[]){  // Take whole thing as argument. and do two different switch case. 
+	
+	switch(Telegramm[2])
 	{
 		/*zweiten Datenbyte*/
 		case(1): return PC0_; //Wert der 2. Daten-Byte von Kommunikation protokoll
@@ -35,7 +35,7 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 		default: return 0; 
 	}
 
-	switch(c[1]):
+	switch(Telegramm[1])
 	{
 		/*1. Daten-Byte*/
 		case(1): return PD5_; // Rainers Version hat hier 0. Kann nicht stimmen. 
@@ -53,15 +53,15 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 	void Pin_Init(char Telegramm[])
 	{
 
-		enum  Mode Output_Input = Pin_Function(Telegramm[1]);
-		enum PinNumber Selected_Pin = Pin(Telegramm[]); 
+		enum  Mode Output_Input = Pin_Function( Telegramm[1]);
+		enum Pin_Number Selected_Pin = Pin( Telegramm[2]); 
 
 
-		switch(Output_Input):
+		switch(Output_Input)
 		{
 			case(Input):
 			{
-				switch(Selected_Pin):
+				switch(Selected_Pin)
 				{
 					case (PB0_): DDRB &= ~(1 << PB0); break; 
 					case (PB1_): DDRB &= ~(1 << PB1); break; 
@@ -83,7 +83,7 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 			
 			case(Output):
 			{
-				switch:(Selected_Pin):
+				switch(Selected_Pin)
 				{
 					case (PB0_): DDRB |= (1 << PB0); break; 
 					case (PB1_): DDRB |= (1 << PB1); break; 
@@ -107,18 +107,18 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 
 
 	}
-	void Pin_Set_Reset(char Telegramm[])
+	void Pin_Set_Read_Write(char Telegramm[])
 	{
 	/* if i change it to read write https://www.arnabkumardas.com/online-courses/avr-gpio-programming-tutorial-atmega328p-avr-8-bit/*/
-		enum  Mode Set_Reset = Pin_Function(Telegramm[1]);
-		enum PinNumber Selected_Pin = Pin(Telegramm[]); 
+		enum  Mode Set_Reset = Pin_Function( Telegramm[1]);
+		enum Pin_Number Selected_Pin = Pin( Telegramm[2]); 
 
 
-		switch(Set_Reset): 
+		switch(Set_Reset) 
 		{
 			case(Reset):
 			{
-				switch(Selected_Pin):
+				switch(Selected_Pin)
 				{
 					case (PB0_): PORTB &= ~(1 << PB0); break; 
 					case (PB1_): PORTB &= ~(1 << PB1); break; 
@@ -140,7 +140,7 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 			
 			case(Set):
 			{
-				switch:(Selected_Pin):
+				switch(Selected_Pin)
 				{
 					case (PB0_): PORTB |= (1 << PB0); break; 
 					case (PB1_): PORTB |= (1 << PB1); break; 
@@ -167,8 +167,8 @@ enum PinNumber Pin(char c[]){  // Take whole thing as argument. and do two diffe
 
 	int Read_Single_Pin( char Telegramm[] )
 	{
-		enum PinNumber Single_Selected_Pin = Pin(Telegramm[]);
-		switch(Single_Selected_Pin):
+		enum Pin_Number Single_Selected_Pin = Pin( Telegramm[2]);
+		switch(Single_Selected_Pin)
 				{
 					case (PB0_): return PB0; 
 					case (PB1_): return PB1; 

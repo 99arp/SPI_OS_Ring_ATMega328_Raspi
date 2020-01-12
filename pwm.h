@@ -10,7 +10,7 @@ typedef enum Prescaler_Value{
 	Prescaler64 = 64,
 	Prescaler256 = 256, 
 	Prescaler1024 = 1024,  
-	ERROR = 0
+	
 
 
 } Prescaler_Value; 
@@ -36,7 +36,7 @@ typedef enum Selected_Kanal {
 
 	Kanal1 = 1, 
 	Kanal2 = 2, 
-	ERROR = 0
+	
 
 }Selected_Kanal; 
 

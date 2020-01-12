@@ -28,15 +28,17 @@ typedef enum Mode {
 typedef enum Pin_Set_Reset {
 	Set = 1, 
 	Reset = 2
-} Mode;
+} Pin_Set_Reset;
 
 
 /*These Functions are probably static*/	
-enum PinNumber Pin(char c); 
+enum Pin_Number Pin(char Telegramm[]); 
 enum Mode Pin_Function(char c); 
-enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c); 
+
+enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c); 
 
 void Pin_Init(char Telegramm[]); 
 void Pin_Manipulation(char Telegramm[]); 
-int Read_Single_Pin(char  Telegramm[] )
+int Read_Single_Pin(char  Telegramm[] ); 
+void Pin_Set_Read_Write(char Telegramm[]); 
 

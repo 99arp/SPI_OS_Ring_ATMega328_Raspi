@@ -10,7 +10,7 @@ http://www.glennsweeney.com/tutorials/interrupt-driven-analog-conversion-with-an
 
 
 
-#include<avr/interrupts.h>
+#include<avr/interrupt.h>
 #include<avr/io.h>
 
 
@@ -158,7 +158,7 @@ uint8_t StartSingleADC(uint8_t Channel)
 	if(Channel < 8  )
 	{
 		ADMUX &= 0xF0;  // Kanalbitsnullen die letzte 4 bits sind für Kanal zuständig
-		ADMUX |= (0x07 & Channel)  // 0b 0000 0111 &  channel werte. Kanal setzen
+		ADMUX |= (0x07 & Channel);  // 0b 0000 0111 &  channel werte. Kanal setzen
 
 		ADCSRA |= 1 << ADSC;    // Wandlung starten 
 

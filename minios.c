@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "os.h"
+#include "minios.h"
 
 
 static OS_Struct befehl_array[OS_MAX_BEFEHLE_NUM] ; //Variablen und Informatinen für einzelne Befehle

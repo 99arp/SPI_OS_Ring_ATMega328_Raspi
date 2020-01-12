@@ -20,7 +20,7 @@ enum Prescaler_Value Prescale_Calculator(char c)
  		case(0x10): return Prescaler256; 
  		case(0x20): return Prescaler1024; 
 
- 		default:     return ERROR;   
+ 		default:     return 0;   
 
  	}
  }
@@ -52,7 +52,7 @@ enum Selected_Kanal Kanal_Select (char c)
 	{
 		case(1): return Kanal1; 
 		case(2): return Kanal2; 
-		default: return ERROR; 
+		default: return 0; 
 	}
 
 }
@@ -60,7 +60,7 @@ enum Selected_Kanal Kanal_Select (char c)
  void Pwm_Init_And_Set_Frequency(char  Telegramm[] ){  /*minimum working  example on adc.h" */
 
  	char  Prescaler_From_Telegramm = Telegramm[2]; 
- 	enum Prescaler_Value Prescaler = Prescale_Calculator(Prescaler_From_Telegramm)
+ 	enum Prescaler_Value Prescaler = Prescale_Calculator(Prescaler_From_Telegramm);
 
  	char  Kanal_From_Telegramm =  Telegramm [1]; 
  	enum Selected_Kanal Kanal = Kanal_Select(Kanal_From_Telegramm); 
@@ -69,7 +69,7 @@ enum Selected_Kanal Kanal_Select (char c)
  	{
  		case(Kanal1):
  		{
- 			DDRD |= (1 << PD5 )  //PD5 als Ausgang
+ 			DDRD |= (1 << PD5 );  //PD5 als Ausgang
  			OCR0B = 0;            // Register, in dem Vergleichwert gespeichert wird. in Setpwm einstellbar
  			TCNT0 = 0;            // Counter Value, initialiest null. 
  			TCCR0A |= (1 << COM0B1); // Non-inverting mode. Pulse happens at the beginning of the period. 
@@ -78,7 +78,7 @@ enum Selected_Kanal Kanal_Select (char c)
 
  		case(Kanal2):
  		{
- 			DDRD |= (1 << PD6 )  //PD6 als Ausgang
+ 			DDRD |= (1 << PD6 );  //PD6 als Ausgang
  			OCR0B = 0;
  			TCNT0 = 0;
  			TCCR0B |= (1 << COM0A1); // Non-inverting mode. Pulse happens at the beginning of the period. 
@@ -87,7 +87,7 @@ enum Selected_Kanal Kanal_Select (char c)
  		default: 
  			return 0; 
 
- 			switch(Prescaler):
+ 			switch(Prescaler)
  			{
  				case(Prescaler1):
  								{
@@ -142,6 +142,8 @@ enum Selected_Kanal Kanal_Select (char c)
 	}
 
 void Pwm_Off(char Telegramm[]) {
+	char Kanal_From_Telegramm = Telegramm[2]; 
+	
 	if(Kanal_From_Telegramm == 1) {			// Kanal 1
 		DDRD &= ~(1 << PD5);
 		TCCR0A &= ~(1 << COM0B1);

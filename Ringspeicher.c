@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 
-#include "rspeicher.h"
+#include "Ringspeicher.h"
 
 
 struct ringspeicher_t  //_t jsut means its "user defined typ

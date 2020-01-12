@@ -1,19 +1,20 @@
 #include "adc.h"
+#include<avr/io.h>
 
 enum ADC_Pin Selected_Pin(char c) {
   switch (c) {
   case (0x01):
-    return PC0_;
+    return ADC_PC0_;
   case (0x02):
-    return PC1_;
+    return ADC_PC1_;
   case (0x03):
-    return PC2_;
+    return ADC_PC2_;
   case (0x04):
-    return PC3_;
+    return ADC_PC3_;
   case (0x05):
-    return PC4_;
+    return ADC_PC4_;
   case (0x06):
-    return PC5_;
+    return ADC_PC5_;
   default:
     return 0;
   }
@@ -43,7 +44,7 @@ Kondensator an AREF-Pin
 */
 
 void Adc_Init(char Telegramm[]) {
-  enum SelectedPin Selected_ADC_Pin = ADC_Pin SelectedPin(Telegramm[1]);
+  enum ADC_Pin Selected_ADC_Pin =  Selected_Pin(Telegramm[1]);
 
   /*
               Initialisation und so weiter noch nicht gemacht.
@@ -54,42 +55,42 @@ void Adc_Init(char Telegramm[]) {
 
   switch (Selected_ADC_Pin) {
 
-  case (PC0_): {
+  case (ADC_PC0_): {
 
     DIDR0 |= 0x1; // Nur der Pin PC0 als ADC. Der Rest kann als GPIO benutzt werden            
     (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0); // Tabelle Oben sehen
 
   } break;
 
-  case (PC1_): {
+  case (ADC_PC1_): {
 
     DIDR0 |= 0x2;
     (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (1 << MUX0);
 
   } break;
 
-  case (PC2_): {
+  case (ADC_PC2_): {
 
     DIDR0 |= 0x4;
     (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (0 << MUX0);
 
   } break;
 
-  case (PC3_): {
+  case (ADC_PC3_): {
 
     DIDR0 |= 0x8;
     (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (1 << MUX0);
 
   } break;
 
-  case (PC4_): {
+  case (ADC_PC4_): {
 
     DIDR0 |= 0x10;
     (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (0 << MUX0);
 
   } break;
 
-  case (PC5_): {
+  case (ADC_PC5_): {
 
     DIDR0 |= 0x20;
     (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (1 << MUX0);

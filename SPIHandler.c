@@ -3,7 +3,7 @@
 #include "adc.h"
 #include "gpio.h"
 
-
+#include <avr/io.h>
 /* https://www.avrfreaks.net/forum/interrupt-driven-slave-spi */
 
 /* This is a function pointer
@@ -14,23 +14,27 @@
 
 */
 
-ptr Telegramm_Function_Assigner(char c)
+fptr Telegramm_Function_Assigner(char c)
 {
 
 	switch (c){
-		case(0x01) : return IO_Init; 
-		case(0x02) : return Pin_Set_Reset; 
-		case(0x03) : return Pwm_Init_And_Set_Frequency; 
-		case(0x04) : return PWM_On; 
-		case(0x05) : return PWM_Off; 
-		case(0x06) : return ADC_Init; 
-		case(0x07) : return Get_Adc; 
-		default    : return ERROR; 
+		case(0x01) : return Pin_Init; 
+		case(0x02) : return Pwm_Init_And_Set_Frequency; 
+		case(0x03) : return Pwm_On; 
+		case(0x04) : return Pwm_Off; 
+		case(0x05) : return Adc_Init; 
+		case(0x06) : return Get_Adc; 
+		default    : return NULL; 
 
 	}
 
 }
+/* To use it 
 
+fptr z = Telegramm_Function_Assigner(c);
+z();
+
+*/
  
 /*
 
