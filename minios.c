@@ -16,7 +16,7 @@ static uint8_t befehl_nummer = 0; // Anzahl der regestierte Befehle
 |              |  Parameter: fncPtr* Befehl, uint8_t periodendauer
 |              |  Rückgabewert: OS_Rueckmeldung  |
 +--------------+-----------------------------------------------------------+
-|Autor         |  Prakash Jamakatel                                        |
+|Autor         |          Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
 | Notes        | Version 1.0 -- 31.10.2019
 |              | Es wurden verschiedne Tutorials zur Hilfe genommnen
@@ -67,7 +67,7 @@ OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_Sta
 |              |  Parameter: fncPtr Befehl, uint8_t periodendauer
 |              |  Rückgabewert: OS_Rueckmeldung  |
 +--------------+-----------------------------------------------------------+
-|Autor         |  Prakash Jamakatel                                        |
+|Autor         |          Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
 | Notes        | Version 1.0 -- 31.10.2019
 |              | Es wurden verschiedne Tutorials zur Hilfe genommnen
@@ -108,7 +108,7 @@ void  OS_Befehltimer(void)
 |              |  Parameter: fncPtr Befehl, uint8_t periodendauer
 |              |  Rückgabewert: OS_Rueckmeldung  |
 +--------------+-----------------------------------------------------------+
-|Autor         |  Prakash Jamakatel                                        |
+|Autor         |          Jamakatel                                        |
 +--------------+-----------------------------------------------------------+
 | Notes        | Version 1.0 -- 31.10.2019
 |              | Es wurden verschiedne Tutorials zur Hilfe genommnen

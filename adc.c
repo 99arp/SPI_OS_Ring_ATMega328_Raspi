@@ -1,6 +1,21 @@
 #include "adc.h"
 #include<avr/io.h>
 
+
+/*--------------+------------------------------------------------------------+
+| Name         | Selected_Pin                                                |
++--------------+-------------------------------------------------------------+
+| Beschreibung | Eine Helferfunktion, um die eingegangenen Datenbytes, einem |
+|              | Pin zuzweisen                                               |
+|              | Parameter: char c: 1. Daten-Byte des Telegramm              |
+|              | Rückgabewert: enum ADC_Pin                                  |
++--------------+-------------------------------------------------------------+
+|Autor         |          Jamakatel                                          |
++--------------+-------------------------------------------------------------+
+| Notes        | Version 1.0 -- 31.10.2019                                   |
+|              |                                                             |
+|              |                                                             |
++--------------+------------------------------------------------------------*/
 enum ADC_Pin Selected_Pin(char c) {
   switch (c) {
   case (0x01):
@@ -22,27 +37,43 @@ enum ADC_Pin Selected_Pin(char c) {
 
 /*
 
-MUX[3:0]	Unsymmetrischer Eingang
-0000	ADC0
-0001	ADC1
-0010	ADC2
-0011	ADC3
-0100	ADC4
-0101	ADC5
-0110	ADC6
-0111	ADC7
-1000	ADC8
 
-
-REFS1	REFS0	Auswahl der Referenzspannung
-0		  0		AREF, interne UREF ist abgeschaltet
-0	      1		AUCC mit externem Kondensator am AREF-Pin
-1	      0		reserviert
-1	      1		Interne Referenzspannung 1,1 V mit externem
-Kondensator an AREF-Pin
 
 */
-
+/*--------------+-----------------------------------------------------------+
+| Name         | Adc_Init                                                   |
++--------------+------------------------------------------------------------+
+| Beschreibung |  Initiiert die ADC Känale einzelnen                        |
+|              |  Parameter: char Telegramm[]:                              |
+|              |  Rückgabewert: void                                        |
+|              |                                                            |
+|              |    Pinfunktionen
+|              |                                                            |
+|              |    MUX[3:0]  Unsymmetrischer Eingang                       |
+|              |    0000  ADC0                                              |
+|              |    0001  ADC1                                              |
+|              |    0010  ADC2                                              |
+|              |    0011  ADC3                                              |
+|              |    0100  ADC4                                              |
+|              |    0101  ADC5                                              |
+|              |    0110  ADC6                                              |
+|              |    0111  ADC7                                              |
+|              |    1000  ADC8                                              |
+|              |                                                            |
+|              |                                                            |
+|              |    REFS1 REFS0 Auswahl der Referenzspannung                |
+|              |    0       0   AREF, interne UREF ist abgeschaltet         |
+|              |    0       1   AUCC mit externem Kondensator am AREF-Pin   |
+|              |    1       0   reserviert                                  |
+|              |    1       1   Interne Referenzspannung 1,1 V mit externem |
+|              |    Kondensator an AREF-Pin                                 |
++--------------+------------------------------------------------------------+
+|Autor         |    Jamakatel                                               |
++--------------+------------------------------------------------------------+
+| Notes        | Version 1.0 -- 31.10.2019
+|              | 
+|              | 
++--------------+-----------------------------------------------------------*/
 void Adc_Init(char Telegramm[]) {
   enum ADC_Pin Selected_ADC_Pin =  Selected_Pin(Telegramm[1]);
 
@@ -101,8 +132,23 @@ void Adc_Init(char Telegramm[]) {
     return 0;
   }
 }
-
-uint8_t Get_Adc(char receivedData[]) {
+/*--------------+-----------------------------------------------------------+
+| Name         | Get_Adc                                                    |
++--------------+------------------------------------------------------------+
+| Beschreibung |  holt die ADC-Werte aus dem iniierten Känale               |
+|              |  Parameter: char Telegramm[]:                              |
+|              |  Rückgabewert: uint8_t                                     |
+|              |  Hierbei wird der adch value auf char gecastet             |
+|              |                                                            |
+|              |                                                            |
++--------------+------------------------------------------------------------+
+|Autor         |          Jamakatel                                         |
++--------------+------------------------------------------------------------+
+| Notes        | Version 1.0 -- 31.10.2019                                  |
+|              |                                                            |
+|              |                                                            |
++--------------+-----------------------------------------------------------*/
+uint8_t Get_Adc(char Telegramm[]) {
   uint8_t adch = 0;
   // Starten der ADC
   ADCSRA |= (1 << ADSC);

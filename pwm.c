@@ -7,8 +7,20 @@
 https://sites.google.com/site/qeewiki/books/avr-guide/pwm-on-the-atmega328 
 
 
-*/
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  Prescale_Calculator                                              |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion um den Wert des Prescalers zu bestimmen   	       |
+|              |                                                                   |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum Prescaler_Value                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 enum Prescaler_Value Prescale_Calculator(char c)
  {
 
@@ -24,7 +36,20 @@ enum Prescaler_Value Prescale_Calculator(char c)
 
  	}
  }
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  DutyCycle                                                        |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion um den Wert des Dutycycles zu bestimmen   	       |
+|              |                                                                   |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum DutyCycle_Value                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
  enum DutyCycle_Value DutyCycle(char c)
  {
 
@@ -45,7 +70,20 @@ enum Prescaler_Value Prescale_Calculator(char c)
  	}
 
  }
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  Kanal_Select                                                     |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion um den ausgewählten Kanal zu bestimmen   	       |
+|              |                                                                   |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum Selected_Kanal                                |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 enum Selected_Kanal Kanal_Select (char c)
 {
 	switch(c)
@@ -56,7 +94,31 @@ enum Selected_Kanal Kanal_Select (char c)
 	}
 
 }
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pwm_Init_And_Set_Freqeuncy                                       |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  PWM initialisieren, un die  Frequenz setzen     	               |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
+|              |                                                                   |
+|              |                                                                   |
+|              | 	CS02	CS01	CS00	Beschreibung                           |
+|              | 	0		0		0	Stop, der Zähler/Zeitgeber0 wird angehalten|
+|              | 	0		0		1	clkI/O (kein Vorteiler)                    |
+|              | 	0		1		0	clkI/O/8                                   |
+|              | 	0		1		1	clkI/O/64                                  |
+|              | 	1		0		0	clkI/O/256                                 |
+|              | 	1		0		1	clkI/O/1024                                |
+|              | 	1		1		0	Speisung von Pin T0, fallende Flanke       |
+|              | 	1		1		1	Speisung von Pin T0, steigende Flanke      |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
  void Pwm_Init_And_Set_Frequency(char  Telegramm[] ){  /*minimum working  example on adc.h" */
 
  	char  Prescaler_From_Telegramm = Telegramm[2]; 
@@ -125,7 +187,20 @@ enum Selected_Kanal Kanal_Select (char c)
 
 
  }
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  PWM_On                                                           |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  PWM einschalten  	                                               |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
  void Pwm_On(char Telegramm[]) {
 	char dutyCycle = Telegramm[2];
 	char Kanal_From_Telegramm = Telegramm[1]; 
@@ -140,7 +215,20 @@ enum Selected_Kanal Kanal_Select (char c)
 		OCR0A = (255/100)*dutyCycle;
 		}
 	}
-
+/*--------------+------------------------------------------------------------------+
+| Name         |  PWM_Off                                                          |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  PWM Ausschalten 	                                               |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 void Pwm_Off(char Telegramm[]) {
 	char Kanal_From_Telegramm = Telegramm[2]; 
 	

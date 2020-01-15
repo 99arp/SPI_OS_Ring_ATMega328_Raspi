@@ -20,8 +20,21 @@ struct ringspeicher_t  //_t jsut means its "user defined typ
     bool full;   // ist der Ringspeicher voll?
 
 };
-
-void ringspeicher_ausgabe(ringspeicher_handle_t rspeicher)
+/*--------------+------------------------------------------------------------------+
+| Name         |  Ringspeicher_Ausgabe                                             |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Inhalt des Ringspeichers ausgeben                                |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t rspeicher                       |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher)
 {
     int c;
     for( c = 0; c < ringspeicher_size(rspeicher); c++)
@@ -32,8 +45,23 @@ void ringspeicher_ausgabe(ringspeicher_handle_t rspeicher)
             printf("Ant the size i s %i " , ringspeicher_size(rspeicher));
     }
 }
-
-ringspeicher_handle_t ringspeicher_init(uint8_t* buffer, size_t size)
+/*--------------+------------------------------------------------------------------+
+| Name         |  Ringspeicher_Init                                                |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Ringspeicher Initialisiern.                                      |
+|              |                                                                   |
+|              |  Parameter: uint8_t* buffer: Ort wo die Daten die im Ringspeicher |
+|              |             gespeichert werden sollen, gespeichert sind.          |
+|              |             size_t size   : Größe des Ringspeichers               |
+|              |  Rückgabewert: ringspeicher_handle_t                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+ringspeicher_handle_t Ringspeicher_Init(uint8_t* buffer, size_t size)
 {
 
     ringspeicher_handle_t rspeicher = malloc(sizeof(ringspeicher_t));  // create the pointer data type with malloc and assign the required memory
@@ -46,8 +74,21 @@ ringspeicher_handle_t ringspeicher_init(uint8_t* buffer, size_t size)
 
 }
 
-
-static void  zeiger_vor(ringspeicher_handle_t rspeicher)   //move the pointer vorwärts if new element is added
+/*--------------+------------------------------------------------------------------+
+| Name         |   static  zeiger_vor                                              |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. Zeiger für Ringspeicher nach vorne rücken        |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  void                                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+static void  Zeiger_Vor(ringspeicher_handle_t rspeicher)   //move the pointer vorwärts if new element is added
 {
 
     if (rspeicher->full)
@@ -61,9 +102,22 @@ static void  zeiger_vor(ringspeicher_handle_t rspeicher)   //move the pointer vo
     rspeicher->full = (rspeicher->head == rspeicher->tail);
 
 }
+/*--------------+------------------------------------------------------------------+
+| Name         |   static  zeiger_rueck                                            |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. Zeiger für Ringspeicher nach hinten rücken       |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  void                                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 
-
-static void zeiger_rueck(ringspeicher_handle_t rspeicher)  // file scope function. Only implemented in this file
+static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope function. Only implemented in this file
 {
     rspeicher->full = false; 							//move the
     rspeicher->tail = (rspeicher->tail + 1) % rspeicher->max;
@@ -71,23 +125,62 @@ static void zeiger_rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 }
 
 
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Klaeren                                           |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. Klärt den Ringspeicher                           |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  void                                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 
-
-void ringspeicher_klaeren(ringspeicher_handle_t rspeicher)
+void Ringspeicher_Klaeren(ringspeicher_handle_t rspeicher)
 {
     free(rspeicher);  // deallocates the memoory assigned during creation through malloc
 }
 
-
-void ringspeicher_reset(ringspeicher_handle_t rspeicher)
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Reset                                             |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. Resettet  den Ringspeicher                       |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  void                                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+void Ringspeicher_Reset(ringspeicher_handle_t rspeicher)
 {
     rspeicher->head = 0;
     rspeicher->tail = 0;
     rspeicher->full = false;
 
 }
-
-size_t ringspeicher_size(ringspeicher_handle_t rspeicher)
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Size                                              |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. gibt größe des Ringspeichers zurück              |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  size_t                                            |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher)
 {
     size_t size = rspeicher->max;
 
@@ -109,40 +202,97 @@ size_t ringspeicher_size(ringspeicher_handle_t rspeicher)
     return size;
 
 }
-
-size_t ringspeicher_kapazitaet(ringspeicher_handle_t rspeicher)  //maximum capacity of ringspeicher
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Kapazitaet                                        |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Helferfunktion. gibt maximale Kapazitaet des Ringspeichers       |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  size_t                                            |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher)  //maximum capacity of ringspeicher
 {
     return rspeicher->max;
 
 }
-
-void ringspeicher_put_override(ringspeicher_handle_t rspeicher, uint8_t data) // replace the first data byte
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Put_Override                                      |
++--------------+-------------------------------------------------------------------+
+|              | Beschreibung:  Neue Datei im Ringspeicher hinzufügen. Wenn neue   |
+|              |       Daten eintreffen und der Ringspeicher voll ist, wird der als| 
+|              |       erste eingetroffenen Datenbyte überschierben                |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t rspeicher, uint8_t data         |
+|              |  Rückgabewert:  void                                              |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data) // replace the first data byte //change to other data type to store other data type
 {
 
     rspeicher->buffer[rspeicher->head] = data;
-    zeiger_vor(rspeicher);
+    Zeiger_Vor(rspeicher);
 
 }
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Put_Ignore                                      |
++--------------+-------------------------------------------------------------------+
+|              | Beschreibung:  Neue Datei im Ringspeicher hinzufügen. Wenn neue   |
+|              |       Daten eintreffen und der Ringspeicher voll ist, wird der als| 
+|              |       erste eingetroffenen Datenbyte überschierben                |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  size_t                                            |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 
-int ringspeicher_put_ignore(ringspeicher_handle_t rspeicher, uint8_t data)  //ignore the data bytes if ring is full
+int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data)  //ignore the data bytes if ring is full
 {
-    if (!ringspeicher_voll(rspeicher))   // return 0 if transmission is sucessful -1 if not
+    if (!Ringspeicher_Voll(rspeicher))   // return 0 if transmission is sucessful -1 if not
     {
         data = rspeicher->buffer[rspeicher->tail],
-                zeiger_rueck(rspeicher);
+                Zeiger_Rueck(rspeicher);
         return 0;
     }
     return -1;
 
 }
-
-int  ringspeicher_get_value(ringspeicher_handle_t rspeicher)
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Get_Value                                         |
++--------------+-------------------------------------------------------------------+
+|              | Beschreibung: Gibt der erste Wert vom Buffer zurück               |
+|              |                                                                   |
+|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Rückgabewert:  size_t                                            |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+int  Ringspeicher_Get_Value(ringspeicher_handle_t rspeicher)
 {
     int data;
-    if (!ringspeicher_leer(rspeicher)) // return 0 if transmission is sucessful 1 if not
+    if (!Ringspeicher_Leer(rspeicher)) // return 0 if transmission is sucessful 1 if not
     {
         data = rspeicher->buffer[rspeicher->head]; //changed from tail to head
-        zeiger_rueck(rspeicher);
+        Zeiger_Rueck(rspeicher);
 
     }
 
@@ -150,13 +300,42 @@ int  ringspeicher_get_value(ringspeicher_handle_t rspeicher)
 
 }
 
-bool ringspeicher_leer(ringspeicher_handle_t rspeicher)  //check if the buffer is empty
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Leer                                              |
++--------------+-------------------------------------------------------------------+
+|              | Beschreibung: Überprüfen ob Ringspeicher leer ist                 |
+|              |                                                                   |
+|              |                                                                   |
+|              | Parameter: ringspeicher_handle_t                                  |
+|              | Rückgabewert:  bool                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher)  //check if the buffer is empty
 {
 
     return(!rspeicher->full && (rspeicher->head == rspeicher->tail));
 }
 
-bool ringspeicher_voll(ringspeicher_handle_t rspeicher)
+/*--------------+------------------------------------------------------------------+
+| Name         |    Ringspeicher_Voll                                              |
++--------------+-------------------------------------------------------------------+
+|              | Beschreibung: Überprüfen ob Ringspeicher voll ist                 |
+|              |                                                                   |
+|              | Parameter: ringspeicher_handle_t                                  |
+|              | Rückgabewert:  bool                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+bool Ringspeicher_Voll(ringspeicher_handle_t rspeicher)
 {
     return rspeicher->full;
 }

@@ -37,10 +37,35 @@ static unsigned char const crc8_table[] = {
 
 #include <stddef.h>
 
-// Return the CRC-8 of data[0..len-1] applied to the seed crc. This permits the
+// Returns the CRC-8 of data[0..len-1] applied to the seed crc. This permits the
 // calculation of a CRC a chunk at a time, using the previously returned value
 // for the next seed. If data is NULL, then return the initial seed. See the
 // test code for an example of the proper usage.
+
+/*--------------+-----------------------------------------------------------+
+| Name         | crc8                                                       |
++--------------+------------------------------------------------------------+
+| Beschreibung |  Realisierung eines crc8 Algorithmus                       |
+|              |  Parameter: unsigned char crc                              |
+|              |             unsigned char const *data                      |
+|              |             size_t   len                                   |
+|              | Gibt die CRC-8 der Daten[0..len-1] zurück, die auf die     |
+|              | Seed-CRC angewendet wurde. Dies erlaubt die                |
+|              | Berechnung eines CRC ein Stück zu einer Zeit,              |
+|              | mit dem vorher zurückgegebenen Wert                        |
+|              | für die nächste Aussaat. Wenn die Daten                    |
+|              | NULL sind, dann geben Sie den ursprünglichen Seed zurück.  | 
+|              |                                                            |
+|              |                                                            |
+|              |  Rückgabewert: unsigned char crc                           |
+|              |                                                            |
++--------------+------------------------------------------------------------+
+|Autor         |          Jamakatel                                         |
++--------------+------------------------------------------------------------+
+|              | Note: Es wurden verschiedne Tutorials zur Hilfe genommnen  |
+|              | Verletzungen des Copyright sind nicht beabsichtigt.        |
++--------------+-----------------------------------------------------------*/
+
 unsigned crc8(unsigned crc, unsigned char const *data, size_t len)
 {
     if (data == NULL)
@@ -52,10 +77,31 @@ unsigned crc8(unsigned crc, unsigned char const *data, size_t len)
     return crc;
 }
 
-// crc8_slow() is an equivalent bit-wise implementation of crc8() that does not
-// need a table, and which can be used to generate crc8_table[]. Entry k in the
-// table is the CRC-8 of the single byte k, with an initial crc value of zero.
-// 0xb2 is the bit reflection of 0x4d, the polynomial coefficients below x^8.
+
+
+/*--------------+------------------------------------------------------------- ---+
+| Name         | crc8_slow                                                       |
++--------------+-----------------------------------------------------------------+
+| Beschreibung |  Realisierung eines crc8 Algorithmus ohne Datentabelle          |
+|              |  Parameter: unsigned char crc                                   |
+|              |             unsigned char const *data                           |
+|              |             size_t   len                                        |
+|              | crc8_slow() ist eine äquivalente bitweise Implementierung von   | 
+|              | crc8(), die keine Tabelle benötigt,und die verwendet werden kann| 
+|              | um crc8_table[] zu erzeugen. Der Eintrag k in thetable ist der  |
+|              | CRC-8 des einzelnen Bytes k, mit einem anfänglichen crc-Wert von|
+|              | null 0xb2 ist die Bit-Reflektion von 0x4d, das Polynom          |
+|              | Koeffizienten unter x^8.                                        |
+|              |                                                                 |
+|              |                                                                 |
+|              |  Rückgabewert: unsigned char crc                                |
+|              |                                                                 |
++--------------+-----------------------------------------------------------------+
+|Autor         |          Jamakatel                                              |
++--------------+-----------------------------------------------------------------+
+|              | Note: Es wurden verschiedne Tutorials zur Hilfe genommnen       |
+|              | Verletzungen des Copyright sind nicht beabsichtigt.             |
++--------------+----------------------------------------------------------------*/
 unsigned crc8_slow(unsigned crc, unsigned char const *data, size_t len)
 {
     if (data == NULL)

@@ -1,6 +1,22 @@
 #include <avr/io.h>
 #include "gpio.h"
 
+
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pin_Function                                                     |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Hilferfunktion um die Pinfunktion aus Telegramm zu bestimmen     |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum Mode                                          |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+
+
 enum Mode Pin_Function(char c){
 
 	switch(c)
@@ -10,6 +26,23 @@ enum Mode Pin_Function(char c){
 		default: return 0; 
 	}
 }
+
+
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pin_Set_Reset_Funktion                                           |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Hilferfunktion um die Betriebmodus 						       |
+|              |  des Pins aus Telegramm zu bestimmen.                             |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum Pin_Set_Reset                                 |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+
 enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c){
 
 	switch(c)
@@ -19,6 +52,22 @@ enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c){
 		default: return 0; 
 	}
 }
+
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pin                                                              |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Hilferfunktion um die ausgewählte  						       |
+|              |  Pin  aus Telegramm zu bestimmen.                                 |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert: enum Pin_Number                                    |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+
 	
 enum Pin_Number Pin(char Telegramm[]){  // Take whole thing as argument. and do two different switch case. 
 	
@@ -49,6 +98,22 @@ enum Pin_Number Pin(char Telegramm[]){  // Take whole thing as argument. and do 
 
 	}
 }
+
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pin_Init                                                         |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Die ausgewählte Pins  aus dem Telegramm initialisieren	       |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+
 
 	void Pin_Init(char Telegramm[])
 	{
@@ -107,6 +172,22 @@ enum Pin_Number Pin(char Telegramm[]){  // Take whole thing as argument. and do 
 
 
 	}
+
+/*--------------+------------------------------------------------------------------+
+| Name         |  Pin_Set_Read_Write                                               |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Die ausgewählte Pins  setzen oder löschen               	       |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
+
 	void Pin_Set_Read_Write(char Telegramm[])
 	{
 	/* if i change it to read write https://www.arnabkumardas.com/online-courses/avr-gpio-programming-tutorial-atmega328p-avr-8-bit/*/
@@ -164,6 +245,20 @@ enum Pin_Number Pin(char Telegramm[]){  // Take whole thing as argument. and do 
 
 	}
 
+/*--------------+------------------------------------------------------------------+
+| Name         |  Read-Single_Pin                                                  |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Die ausgewählte Pins  lesen                             	       |
+|              |                                                                   |
+|              |  Parameter: char Telegramm[]                                      |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 
 	int Read_Single_Pin( char Telegramm[] )
 	{

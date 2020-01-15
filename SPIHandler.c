@@ -14,6 +14,71 @@
 
 */
 
+/*
+
+This is what i want https://www.tablix.org/~avian/blog/archives/2012/06/spi_interrupts_versus_polling/
+
+
+*/
+
+
+
+static uint8_t* volatile burstData; 
+static volatile int  burstLen = -1; 
+
+ISR(SPI_STC_vect){
+
+	burstLen --; 
+	if(burstLen < 0 )
+	{
+		/*finished, turn off the interrupt request */
+		SPCR &= ~_BV(SPIE) /* BV explained: https://www.microchip.com/webdoc/avrlibcreferencemanual/FAQ_1faq_use_bv.html*/
+
+
+	}
+	else {
+		SPDR = *burstData; 
+		 burstData++; 
+	}
+
+}
+
+void sepa525_dataBurst(uint8_t* values, int len)
+{	
+	/*wait if software buffer is not empty */
+	while (burstLen >= 0); 
+	burstLen = len; 
+	burstData =  values;
+
+	/*enable Interrupt */
+
+	SPCR |= _BV(SPIE); 
+
+	/*start the transfer of the first byte */
+	SPI_STC_vect(); 
+
+
+
+
+
+}
+
+
+
+/*--------------+------------------------------------------------------------------+
+| Name         |    Telegramm_Function_Assinger                                    |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  Ordnet dem Telegramm Nachricht einer entsprechenden  Funktion zu |
+|              |                                                                   |
+|              |  Parameter: char c                                                |
+|              |  Rückgabewert:  fptr (Siehe header file für Beschreibung)         |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 fptr Telegramm_Function_Assigner(char c)
 {
 
@@ -41,7 +106,20 @@ z();
 A function that returns pointer to the function that needs to be done
 
 */
-
+/*--------------+------------------------------------------------------------------+
+| Name         |    SPI_SlaveInit                                                  |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  ATMega 328 als Slave in einer SPI-Kommunikation initialieren     |
+|              |                                                                   |
+|              |  Parameter: void                                                  |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
  void SPI_SlaveInit(void) {
 	
 	DDRB |= (1<<PORTB4);// MISO als Output
@@ -56,9 +134,26 @@ Or rather this
 https://www.avrfreaks.net/forum/spi-interrupt-atmega328
 
 
+and here is the answer: https://sites.google.com/site/qeewiki/books/avr-guide/spi
+SPI AVR Setup : https://www.element14.com/community/docs/DOC-65037/l/avr151-setup-and-use-of-the-spi
+
+
 */
 
-
+/*--------------+------------------------------------------------------------------+
+| Name         |    SPI_SlaveReceive                                               |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  SPI Daten empfangen                                              |
+|              |                                                                   |
+|              |  Parameter: void                                                 |
+|              |  Rückgabewert: char                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 char SPI_SlaveReceive(void) {
   char data;							
 
@@ -71,6 +166,20 @@ char SPI_SlaveReceive(void) {
   return data;	 // Rückgabewert data (char)						
 }
 
+/*--------------+------------------------------------------------------------------+
+| Name         |    SPI_SlaveSend                                                  |
++--------------+-------------------------------------------------------------------+
+| Beschreibung |  SPI Daten aussenden                                              |
+|              |                                                                   |
+|              |  Parameter: char sendBits                                         |
+|              |  Rückgabewert: void                                               |
++--------------+-------------------------------------------------------------------+
+|Autor         |  Jamakatel                                                        |
++--------------+-------------------------------------------------------------------+
+| Notes        |  Version 1.0 -- 31.10.2019                                        |
+|              |                                                                   |
+|              |                                                                   |
++--------------+------------------------------------------------------------------*/
 void SPI_SlaveSend(char sendBits) {	
 	
   SPDR = sendBits;	 // Zuweisung des Übergabewertes in das Datenregister					
