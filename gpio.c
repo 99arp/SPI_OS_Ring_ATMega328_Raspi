@@ -1,5 +1,96 @@
+
+
+/* ***********************  C-Modul: gpio.c  ********************************************
+*
+* Dieses Programm wurde mit Atmelstudio 7  als  Konsolenanwendung  erstellt.
+*
+* Das Modul ist in Ansi-C (C89) geschrieben. Die Erweiterungen des C99 Standard finden bis auf:
+*
+*   
+*
+*  keine Anwendung.
+*
+*
+* In diesem Modul sind alle Funktionen realisiert, ddie zum Setzten bzw. Rücksetzen und Schreiben bzw. 
+* Lesen des GPIO Pins notwending ist.  
+*
+*
+*
+*
+* Das C- Modul arbeitet mit den Files-Scope-Variablen:
+*
+*  - Typ    Name              : 
+*       
+*
+* Globale Variablen gibt es nicht. Das Modul stellt als Schnittstelle öffentliche
+* Funktionen bereit:
+*
+*
+* enum Pin_Number Pin(char Telegramm[]) --> Gibt der Pin Number basiernd auf das Kommunikationsprotokoll zürück. Dient der Lesbarkeit
+* enum Mode Pin_Function(char c) --> Gibt der Pin Funktion  basiernd auf das Kommunikationsprotokoll zürück. Dient der Lesbarkeit
+*
+* enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c) --> Gibt der Pin Modus basiernd auf das Kommunikationsprotokoll zürück. Dient der Lesbarkeit
+*
+* void Pin_Init(char Telegramm[]) --> Initialierung der Pins
+* void Pin_Manipulation(char Telegramm[])  --> Setzen oder Rücksetzen von Pins
+* int Read_Single_Pin(char  Telegramm[] )  --> Einzelene Pins lesen
+* void Pin_Set_Read_Write(char Telegramm[]) --> Pin  Lesen oder Schreiben
+*
+* Die ausfürhliche Beschreibung der Funtkionen sind unten vor deren Difinition zu finden. 
+*
+*
+*
+*
+*
+* Alle anderen Funktionen des Moduls sind durch den vorangestellten static Qualifier als lokale
+* Funktionen ausgezeichnet.
+*
+* static  enum Mode Pin_Function(char c) --> Gibt der Pin Funktion  basiernd auf das Kommunikationsprotokoll zürück. Dient der Lesbarkeit
+* static enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c) --> Gibt der Pin Modus basiernd auf das Kommunikationsprotokoll zürück. Dient der Lesbarkeit
+********************************************************************************************************/
+
+//************* Header-Dateien ****************
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//************ weitere Include-Dateien *********
+
 #include <avr/io.h>
 #include "gpio.h"
+//**************************************************
+
+
+
+
+//********** nicht öffentliche Konstanten **********
+
+//**************************************************
+
+
+
+
+//********* nicht öffentliche Strukturen ***********
+
+//**************************************************
+
+
+
+
+//****** nicht öffentliche Typendefinitionen *******
+
+//**************************************************
+
+
+
+
+//************* File-Scope-Variablen ***************
+
+//**************************************************
+
+//****************** Funktionen ********************
+
 
 
 /*--------------+------------------------------------------------------------------+
@@ -17,7 +108,7 @@
 +--------------+------------------------------------------------------------------*/
 
 
-enum Mode Pin_Function(char c){
+static enum Mode Pin_Function(char c){
 
 	switch(c)
 	{
@@ -43,7 +134,7 @@ enum Mode Pin_Function(char c){
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 
-enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c){
+static enum Pin_Set_Reset Pin_Set_Reset_Funktion(char c){
 
 	switch(c)
 	{

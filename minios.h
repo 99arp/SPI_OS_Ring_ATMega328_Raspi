@@ -1,23 +1,37 @@
-/*https://www.avrfreaks.net/forum/tutc-multi-tasking-tutorial-part-1?page=all
-https://github.com/ferenc-nemeth/avr-simple-scheduler/blob/master/Scheduler/OS/OS.h
-*/
+/* *********  Header.File des Moduls minios.c  ***************************************************************
+*Enthält die externe Deklaration der öffentlichen Funktionen, die zur Realsierung einer Mini-OS benötigt sind. Hierbei handelt es sich um eine
+* non pre emptiv OS. Wie diese OS verwendet werden kann ist im C Datei dokumentiert. 
+* 
+*
+* 
+* 
+*
+***********************************************************************************************************/
 
-/*
-This is a Non Premeptive OS. It just means that there is no Interrupt in this timer.
+#ifndef MINIOS_H
+#define MINIOS_H
 
-*/
-#ifndef MINIOS_H_
-#define MINIOS_H_
+//*************** öffentliche Enumerations ************************
 
-//#include <avr/io.h>
-#include <stddef.h>
-#include <stdbool.h>
+//*****************************************************************
 
 
+
+//**************** öffentliche Konstanten *************************
 #define OS_MAX_BEFEHLE_NUM ((uint8_t) 10)  //Maximale Anzahl an Befehle die durchgeführt werden können
 #define OS_MAX_ZEIT     ((uint8_t) 10 ) // Maximale Lauzeit eines Befhels
 #define OS_MIN_ZEIT     ((uint8_t) 1 ) //u suffix means that the integer value is unsigned
+//*****************************************************************
 
+
+
+//*************** öffentliche Strukturen *************************
+
+//**************************************************************
+
+
+
+//******************** Typdefinitionen *************************
 
 typedef void (*fncPtr) (void);    // Funktionenzeiger um Befehle zu registiren
 
@@ -25,8 +39,8 @@ typedef void (*fncPtr) (void);    // Funktionenzeiger um Befehle zu registiren
 typedef enum OS_State
 {
     BLOCKED = 0,  // Hier wird  au fden Timer gewartet.
-    READY,        // Hier
-    SUSPENDED    // OS wird suspende
+    READY,        // Bereit
+    SUSPENDED    // OS wird suspended
 } OS_State;
 
 typedef struct
@@ -50,18 +64,21 @@ typedef enum
 
 } OS_Rueckmeldung;
 
+//*******************************++*****************************
 
 
-/*Funktionen*/
+
+//******* Vorwärtsdeklarationen öffentliche Funktionen ********
+
 
 OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_State Default );
 void  OS_Befehltimer(void);
 void OS_Befehlausfueheren(void);
 
 
-/*Funktionen die, die werte zurückgeben*/
+/*Funktionen die, die werte zurückgeben. Diese Stellen die mögliche Erweiterung der Funtkionalität dar*/
 
-// these methods might not be necessary for my use
+
 
 /*
 OS_State OS_Befehlstaterueckgabe(uint8_t befehlnummer );

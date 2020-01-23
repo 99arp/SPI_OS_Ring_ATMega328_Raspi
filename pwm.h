@@ -1,8 +1,35 @@
-/* Prescaler Funktion here till correct files are created */
+
+/* *********  Header.File des Moduls pwm.c  ***************************************************************
+*Enthält die externe Deklaration der öffentlichen Funktionen, die für PWM notwendig sind
+* 
+*
+* 
+* 
+*
+***********************************************************************************************************/
 
 #ifndef __PWM_H
 #define __PWM_H
 
+//*************** öffentliche Enumerations ************************
+
+//*****************************************************************
+
+
+
+//**************** öffentliche Konstanten *************************
+
+//*****************************************************************
+
+
+
+//*************** öffentliche Strukturen *************************
+
+//**************************************************************
+
+
+
+//******************** Typdefinitionen *************************
 typedef enum Prescaler_Value{
 
 	Prescaler1 = 1,
@@ -40,15 +67,36 @@ typedef enum Selected_Kanal {
 
 }Selected_Kanal; 
 
+//*******************************++*****************************
 
-enum Prescaler_Value Prescale_Calculator(char c);
-enum DutyCycle_Value DutyCycle(char c);
-enum  Selected_Kanal Kanal_Select (char c); 
+
+
+//******* Vorwärtsdeklarationen öffentliche Funktionen ********
+
+
+
 
 void Pwm_Init_And_Set_Frequency(char Telegramm[]);
 
 void Pwm_On(char Telegramm[]);
 void Pwm_Off(char Telegramm[]);
+
+
+/*static Funtkionen. Vollständigkeithalber erwähnt, Die sind im C datei definert. 
+enum Prescaler_Value Prescale_Calculator(char c);
+enum DutyCycle_Value DutyCycle(char c);
+enum  Selected_Kanal Kanal_Select (char c); */
+ //*************************************************************
+
+
+
+
+
+ 
+
+
+
+
 
  
 #endif // Ende pwm.h

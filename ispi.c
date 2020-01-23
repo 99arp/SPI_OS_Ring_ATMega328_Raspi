@@ -97,3 +97,20 @@ ISR(ADC_vect)
 /*
 yeso ek choti socheko jasto garum la ta. 
 yo ta mug vaii halyo, jasari tesarai vaii nai halxa ni kura. kura namilni ta abah khas ma vanda kheri, bachelor ma matrai ho. 
+
+
+bcm2835_spi_begin();
+bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, 0);
+bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS1, 0);
+bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_128);
+bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);	
+bcm2835_spi_chipSelect(BCM2835_SPI_CS0)
+
+printf("Enter the Data You want to send: \n"); 
+char data_buffer[10] ; 
+scanf("%s", data_buffer);
+int Count; 
+for (Count = 0; Count < 10; Count++)
+		data_buffer[Count] = 0x80 + Count;
+	bcm2835_spi_transfern(&data_buffer[0], 10);	
+

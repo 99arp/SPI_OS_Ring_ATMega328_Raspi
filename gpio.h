@@ -1,5 +1,35 @@
+/* *********  Header.File des Moduls gpio.c  ***************************************************************
+*Enthält die externe Deklaration der öffentlichen Funktionen, die zum Setzten bzw. Rücksetzen und Schreiben bzw. 
+*Lesen des GPIO Pins notwending ist.  
+* 
+*
+* 
+* 
+*
+***********************************************************************************************************/
+
+#ifndef GPIO_H
+#define GPIO_H
+
+//*************** öffentliche Enumerations ************************
+
+//*****************************************************************
 
 
+
+//**************** öffentliche Konstanten *************************
+
+//*****************************************************************
+
+
+
+//*************** öffentliche Strukturen *************************
+
+//**************************************************************
+
+
+
+//******************** Typdefinitionen *************************
 typedef enum Pin_Number{
 
 	PB0_ = 1,  // Liste der Pins, die auf der Erweiterungskarte ansprechbar sind
@@ -19,7 +49,6 @@ typedef enum Pin_Number{
 
 } Pin_Number; 
 
-
 typedef enum Mode {
 	Input = 1, 
 	Output = 2
@@ -30,10 +59,14 @@ typedef enum Pin_Set_Reset {
 	Reset = 2
 } Pin_Set_Reset;
 
+//*******************************++*****************************
 
-/*These Functions are probably static*/	
-enum Pin_Number Pin(char Telegramm[]); 
-enum Mode Pin_Function(char c); 
+
+
+//******* Vorwärtsdeklarationen öffentliche Funktionen ********
+
+
+
 
 enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c); 
 
@@ -41,4 +74,25 @@ void Pin_Init(char Telegramm[]);
 void Pin_Manipulation(char Telegramm[]); 
 int Read_Single_Pin(char  Telegramm[] ); 
 void Pin_Set_Read_Write(char Telegramm[]); 
+/* static Funtkionen. Vollständigkeithalber erwähnt, Die sind im C datei definert. 
+enum Pin_Number Pin(char Telegramm[]); 
+enum Mode Pin_Function(char c); */
+
+ //*************************************************************
+
+
+
+
+
+ 
+
+
+#endif
+
+
+
+
+
+
+
 

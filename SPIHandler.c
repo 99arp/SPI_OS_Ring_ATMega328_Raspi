@@ -1,9 +1,94 @@
-#include "SPIhandler.h"
+/* ***********************  C-Modul: SPIHandler.c  ********************************************
+*
+* Dieses Programm wurde mit Atmelstudio 7  als  Konsolenanwendung  erstellt.
+*
+* Das Modul ist in Ansi-C (C89) geschrieben. Die Erweiterungen des C99 Standard finden bis auf:
+*
+*   
+*
+*  keine Anwendung.
+*
+*
+* In diesem Modul sind alle Funktionen realisiert, die dafür nötig sind, die von SPI empfangengen Daten einem Funtkion zuzuweisen,
+* einschließen die SPI Funktionalität und SPI Iterrupt. 
+* 
+*
+*
+*
+*
+* Das C- Modul arbeitet mit den Files-Scope-Variablen:
+*
+*  - Typ    Name              : 
+*       
+*
+* Globale Variablen gibt es nicht. Das Modul stellt als Schnittstelle öffentliche
+* Funktionen bereit:
+*
+* void SPI_SlaveInit(void); --> ATmega als Slave Initialiseren 
+* void SPI_SlaveSend(char sendBits); --> Senden der Daten über SPI 
+*
+*
+*
+*   
+* Die ausfürhliche Beschreibung der Funtkionen sind unten von deren Difinition zu finden. 
+*
+*
+*
+*
+*
+* Alle anderen Funktionen des Moduls sind durch den vorangestellten static Qualifier als lokale
+* Funktionen ausgezeichnet.
+*
+* 
+********************************************************************************************************/
+
+//************* Header-Dateien ****************
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//************ weitere Include-Dateien *********
+
+#include "SPIHandler.h"
 #include "pwm.h"
 #include "adc.h"
 #include "gpio.h"
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+//**************************************************
+
+
+
+
+//********** nicht öffentliche Konstanten **********
+
+//**************************************************
+
+
+
+
+//********* nicht öffentliche Strukturen ***********
+
+//**************************************************
+
+
+
+
+//****** nicht öffentliche Typendefinitionen *******
+
+//**************************************************
+
+
+
+
+//************* File-Scope-Variablen ***************
+
+//**************************************************
+
+//****************** Funktionen ********************
+
 /* https://www.avrfreaks.net/forum/interrupt-driven-slave-spi */
 
 /* This is a function pointer
@@ -123,8 +208,12 @@ A function that returns pointer to the function that needs to be done
  void SPI_SlaveInit(void) {
 	
 	DDRB |= (1<<PORTB4);// MISO als Output
-	SPCR = (1<<SPE);// SPI enable						
+	SPCR &= ~(1<<MSTR);                // Set as slave 
+    SPCR |= (1<<SPR0)|(1<<SPR1);       // divide clock by 128
+    SPCR |= (1<<SPIE);                 // Enable SPI-Interrupt
+	SPCR = (1<<SPE);//  SPI enable						
 }
+
 
 /*
 
@@ -145,7 +234,7 @@ SPI AVR Setup : https://www.element14.com/community/docs/DOC-65037/l/avr151-setu
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  SPI Daten empfangen                                              |
 |              |                                                                   |
-|              |  Parameter: void                                                 |
+|              |  Parameter: void                                                  |
 |              |  Rückgabewert: char                                               |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |

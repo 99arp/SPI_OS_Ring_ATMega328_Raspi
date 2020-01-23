@@ -1,16 +1,79 @@
-//
-// Created by praka on 15.11.2019.
-//
+
+
+/* ***********************  C-Modul: Ringspeicher.c  ********************************************
+*
+* Dieses Programm wurde mit Atmelstudio 7  als  Konsolenanwendung  erstellt.
+*
+* Das Modul ist in Ansi-C (C89) geschrieben. Die Erweiterungen des C99 Standard finden bis auf:
+*
+*   
+*
+*  keine Anwendung.
+*
+*
+* In diesem Modul sind alle Funktionen realisiert, die
+* zur Initialiserung der ADC, so wie zur AD bzw. DC Wandlung so wie  Interrupt Service Routine für ADC benötigt sind
+*
+*
+*
+*
+* Das C- Modul arbeitet mit den Files-Scope-Variablen:
+*
+*  - Typ    Name              : 
+*       
+*
+* Globale Variablen gibt es nicht. Das Modul stellt als Schnittstelle öffentliche
+* Funktionen bereit:
+*
+* ringspeicher_handle_t Ringspeicher_init(uint8_t* buffer, size_t size); --> Ringspeicher Init
+* void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher); --> Ringspeicher Leeren 
+* void Ringspeicher_Reset(ringspeicher_handle_t rspeicher);
+* void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data); --> Letze Werte Überschreiben
+* int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data); --> Datei ignorieren bis frei wird. 
+* int Ringspeicher_Get_Value(ringspeicher_handle_t);
+* bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher);
+* bool Ringspeicher_Voll(ringspeicher_handle_t rspeicher);
+* size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher);
+* size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher);
+* void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher);
+*
+*
+*
+* Die ausfürhliche Beschreibung der Funtkionen sind unten von deren Difinition zu finden. 
+*
+*
+*
+*
+*
+* Alle anderen Funktionen des Moduls sind durch den vorangestellten static Qualifier als lokale
+* Funktionen ausgezeichnet.
+*
+*   static enum ADC_Pin Selected_Pin(char c ) --> Zur Verbessurung der Lesbarbkeit. Gibt der Pinname von empafangenen Telegramm zurück
+********************************************************************************************************/
+
+//************* Header-Dateien ****************
 
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
 
+//************ weitere Include-Dateien *********
 
 #include "Ringspeicher.h"
+//**************************************************
 
 
+
+
+//********** nicht öffentliche Konstanten **********
+
+//**************************************************
+
+
+
+
+//********* nicht öffentliche Strukturen ***********
 struct ringspeicher_t  //_t jsut means its "user defined typ
 {
     uint8_t* buffer;   // die gespeicherte Daten
@@ -20,6 +83,30 @@ struct ringspeicher_t  //_t jsut means its "user defined typ
     bool full;   // ist der Ringspeicher voll?
 
 };
+//**************************************************
+
+
+
+
+//****** nicht öffentliche Typendefinitionen *******
+
+//**************************************************
+
+
+
+
+//************* File-Scope-Variablen ***************
+
+//**************************************************
+
+//****************** Funktionen ********************
+
+
+
+
+
+
+
 /*--------------+------------------------------------------------------------------+
 | Name         |  Ringspeicher_Ausgabe                                             |
 +--------------+-------------------------------------------------------------------+
@@ -126,7 +213,7 @@ static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 
 
 /*--------------+------------------------------------------------------------------+
-| Name         |    Ringspeicher_Klaeren                                           |
+| Name         |    Ringspeicher_Leeren                                           |
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. Klärt den Ringspeicher                           |
 |              |                                                                   |
@@ -140,7 +227,7 @@ static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 
-void Ringspeicher_Klaeren(ringspeicher_handle_t rspeicher)
+void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher)
 {
     free(rspeicher);  // deallocates the memoory assigned during creation through malloc
 }
@@ -343,19 +430,3 @@ bool Ringspeicher_Voll(ringspeicher_handle_t rspeicher)
 
 
 
-/*
-
-Citable book:  https://books.google.de/books?id=pfdaDwAAQBAJ&pg=PA221&dq=ring+buffer+design+c&hl=en&sa=X&ved=0ahUKEwiBq_2Y4L7lAhUJ86YKHVefAMgQ6AEIOjAC#v=onepage&q=ring%20buffer%20design%20c&f=false
-
-To my understanding on date 28.10 the following steps should be taken to implement the ring buffer
-
-ringspeicher_int() Here the size of ring buffer is initialized with data varaiable and buffer does
-the following:
-
-
-
-
-
-
-
-*/

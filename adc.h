@@ -1,5 +1,34 @@
-#include <stdio.h>
+/* *********  Header.File des Moduls adc.c  ***************************************************************
+*Enthält die externe Deklaration der öffentlichen Funktionen, die für AD- bzw. DA Wandlung notwernding sind 
+* 
+*
+* 
+* 
+*
+***********************************************************************************************************/
 
+#ifndef ADC_H
+#define ADC_H
+
+//*************** öffentliche Enumerations ************************
+
+//*****************************************************************
+
+
+
+//**************** öffentliche Konstanten *************************
+
+//*****************************************************************
+
+
+
+//*************** öffentliche Strukturen *************************
+
+//**************************************************************
+
+
+
+//******************** Typdefinitionen *************************
 typedef enum ADC_Pin{
 
 	ADC_PC0_ = 1, 
@@ -10,9 +39,27 @@ typedef enum ADC_Pin{
 	ADC_PC5_ = 6
 
 
-} ADC_Pin; 
+} ADC_Pin;
+//*******************************++*****************************
 
-enum ADC_Pin Selected_Pin(char c ); 
+
+
+//******* Vorwärtsdeklarationen öffentliche Funktionen ********
+
+
 
 void Adc_Init(char Telegramm[]); 
 uint8_t Get_Adc(char Telegramm[]); 
+/*static Funtkionen. Vollständigkeithalber erwähnt, Die sind im C datei definert. 
+enum ADC_Pin Selected_Pin(char c ); */
+
+ //*************************************************************
+
+
+
+
+
+ 
+
+
+#endif
