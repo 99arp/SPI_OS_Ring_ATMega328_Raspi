@@ -90,10 +90,6 @@
 //****************** Funktionen ********************
 
 
-/*
-16 bit PWM Beispiel
-https://sites.google.com/site/qeewiki/books/avr-guide/pwm-on-the-atmega328 
-
 
 /*--------------+------------------------------------------------------------------+
 | Name         |  Prescale_Calculator                                              |
@@ -143,17 +139,17 @@ static enum Prescaler_Value Prescale_Calculator(char c)
 
  	switch (c)
  	{
- 		case(10):  return DutyCycle10; // Kommunikationsprotokoll. Decimal. Already converted from binary 
- 		case(20):  return DutyCycle20; // von Kommunikationsprotokoll
- 		case(30):  return DutyCycle30; 
- 		case(40):  return DutyCycle40; 
- 		case(50):  return DutyCycle50; 
- 		case(60):  return DutyCycle60; 
- 		case(70):  return DutyCycle70; 
- 		case(80):  return DutyCycle80; 
- 		case(90):  return DutyCycle90; 
+ 		case(0x10):  return DutyCycle10; // Kommunikationsprotokoll. Decimal. Already converted from binary 
+ 		case(0x20):  return DutyCycle20; // von Kommunikationsprotokoll
+ 		case(0x30):  return DutyCycle30; 
+ 		case(0x40):  return DutyCycle40; 
+ 		case(0x50):  return DutyCycle50; 
+ 		case(0x60):  return DutyCycle60; 
+ 		case(0x70):  return DutyCycle70; 
+ 		case(0x80):  return DutyCycle80; 
+ 		case(0x90):  return DutyCycle90; 
  		
- 		default:     return ON;   
+ 		default:     return 0;   
 
  	}
 
@@ -176,16 +172,16 @@ static enum Selected_Kanal Kanal_Select (char c)
 {
 	switch(c)
 	{
-		case(1): return Kanal1; 
-		case(2): return Kanal2; 
+		case(0x01): return Kanal1; 
+		case(0x02): return Kanal2; 
 		default: return 0; 
 	}
 
 }
 /*--------------+------------------------------------------------------------------+
-| Name         |  Pwm_Init_And_Set_Freqeuncy                                       |
+| Name         |  Pwm_Init_And_Set_Prescalar                                       |
 +--------------+-------------------------------------------------------------------+
-| Beschreibung |  PWM initialisieren, un die  Frequenz setzen     	               |
+| Beschreibung |  PWM initialisieren, und die  Prescalar setzen                    |
 |              |                                                                   |
 |              |  Parameter: char Telegramm[]                                      |
 |              |  Rückgabewert: void                                               |
@@ -207,35 +203,18 @@ static enum Selected_Kanal Kanal_Select (char c)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-void Pwm_Init_And_Set_Frequency(char Telegramm[])
+void Pwm_Init_And_Set_Prescaler(char Telegramm[])
 {
 	char  Prescaler_From_Telegramm = Telegramm[2]; 
  	enum Prescaler_Value Prescaler = Prescale_Calculator(Prescaler_From_Telegramm);
+// 	OCR1B = 0;            // Register, in dem Vergleichwert gespeichert wird. in Setpwm einstellbar
+//  	TCNT1 = 0;            // Counter Value, initialiest null. 
+	ICR1 = 0xFFFF; 
+ 	TCCR1A |= (1 << COM1A1)|(1 << COM1B1); // Non-inverting mode. Pulse happens at the beginning of the period. bin mir unsicher ob man das wriklich braucht 
+ 	TCCR1A |= (1 << WGM11 ); // set fast PWM Mode WGM02 is 0 by Default.
+ 	TCCR1B |= (1 << WGM12) | (1 << WGM13); 
 
- 	char  Kanal_From_Telegramm =  Telegramm [1]; 
- 	enum Selected_Kanal Kanal = Kanal_Select(Kanal_From_Telegramm); 
-
- 	switch(Kanal_From_Telegramm)
- 	{
- 		OCR1B = 0;            // Register, in dem Vergleichwert gespeichert wird. in Setpwm einstellbar
- 		TCNT1 = 0;            // Counter Value, initialiest null. 
- 		TCCR1A |= (1 << COM1B1); // Non-inverting mode. Pulse happens at the beginning of the period. bin mir unsicher ob man das wriklich braucht 
- 		TCCR1A |= (1 << WGM11 )| (1 << WGM10 ); // set fast PWM Mode WGM02 is 0 by Default.
- 		TCCR1B |= (1 << WGM12) | (1 << WGM13);  
- 		case(Kanal1):
- 		{
- 			DDRB |= (1 << PB1 );  //PB1 als Ausgang
- 			
- 		}
-
- 		case(Kanal2):
- 		{
- 			DDRB |= (1 << PB2 );  //PB2 als Ausgang
- 			
- 		}
-
- 		default:
- 			return 0; 
+  
  		
  		switch(Prescaler)
  			{
@@ -272,7 +251,7 @@ void Pwm_Init_And_Set_Frequency(char Telegramm[])
  	}
 
 
-}	
+	
 
 
 /*--------------+------------------------------------------------------------------+
@@ -290,17 +269,19 @@ void Pwm_Init_And_Set_Frequency(char Telegramm[])
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 void Pwm_On(char Telegramm[]) {
-	char dutyCycle = Telegramm[2];
+	char dutyCycle = DutyCycle(Telegramm[2]);
 	char Kanal_From_Telegramm = Telegramm[1]; 
-	
+ 
 
 
-	if(Kanal_From_Telegramm == 1) {			// Kanal 1 Possible becasue 0x01 = int 1 
-		OCR1B = (0xFFFF/100)*dutyCycle; //heighest value of 16 bit 
+	if(Kanal_From_Telegramm == 1) {			// Kanal 1 Possible because 0x01 = int 1 
+		DDRB |= (1 << PORTB1 );  //PB1 als Ausgang
+		OCR1A = (0xFFFF/100)*dutyCycle; //highest value of 16 bit 
 		}
 
-	if(Kanal_From_Telegramm == 2) {			// Kanal 2
-		OCR1B = (0xFFFF/100)*dutyCycle;		//heighest value of 16 bit 
+	if(Kanal_From_Telegramm == 2) {	
+		DDRB |= (1 << PORTB2 );  //PB2 als Ausgang		// Kanal 2
+		OCR1B = (0xFFFF/100)*dutyCycle;		//highest value of 16 bit 
 		}
 	}
 
@@ -321,15 +302,15 @@ void Pwm_On(char Telegramm[]) {
 
 
 
-void Pwm_Off_Timer0(char Telegramm[]) {
+void Pwm_Off(char Telegramm[]) {
 	char Kanal_From_Telegramm = Telegramm[2]; 
 	
 	if(Kanal_From_Telegramm == 1) {			// Kanal 1
-		DDRB &= ~(1 << PB1);
+		DDRB &= ~(1 << PORTB1);
 		TCCR1A &= ~(1 << COM1B1);
 		}
 	if(Kanal_From_Telegramm == 2) {			// Kanal 2
-		DDRB &= ~(1 << PB1);
+		DDRB &= ~(1 << PORTB1);
 		TCCR1A &= ~(1 << COM1A1);
 		}
 	}
@@ -355,7 +336,7 @@ void Pwm_Off_Timer0(char Telegramm[]) {
 
 
 	if(Kanal_From_Telegramm == 1) {			// Kanal 1 Possible becasue 0x01 = int 1 
-		OCR0B = (255/100)*dutyCycle;
+		OCR0A = (255/100)*dutyCycle;
 		}
 
 	if(Kanal_From_Telegramm == 2) {			// Kanal 2
@@ -365,7 +346,7 @@ void Pwm_Off_Timer0(char Telegramm[]) {
 
 
 /*--------------+------------------------------------------------------------------+
-| Name         |  PWM_Off                                                          |
+| Name         |  PWM_Off_Timer0                                                   |
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  PWM Ausschalten 	                                               |
 |              |  Benutzt 8  bit Timer0                                            |
@@ -385,11 +366,11 @@ void Pwm_Off_Timer0(char Telegramm[]) {
 	char Kanal_From_Telegramm = Telegramm[2]; 
 	
 	if(Kanal_From_Telegramm == 1) {			// Kanal 1
-		DDRD &= ~(1 << PD5);
+		DDRD &= ~(1 << PORTD5);
 		TCCR0A &= ~(1 << COM0B1);
 		}
 	if(Kanal_From_Telegramm == 2) {			// Kanal 2
-		DDRD &= ~(1 << PD5);
+		DDRD &= ~(1 << PORTD5);
 		TCCR0A &= ~(1 << COM0A1);
 		}
 	}

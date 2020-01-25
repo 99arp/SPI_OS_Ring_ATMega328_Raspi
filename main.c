@@ -1,132 +1,166 @@
 
-#define F_CPU 16000000UL
+/* ***********************  C-Modul: main.c  **********************************************************
+*
+*  main.c der Studienprojekt-II Fortführung: Fortführung: Programmentwicklung für eine SPI gestützte
+*  Kommunikation zwischen einem Raspberry Pi und einem ATmega328
+*   
+*  Die Entwicklungsaufträge wurden umgesetzt. Es wurde folgende Änderungen und Erweiterungen vorgenommen:
+*      ->Entwicklung eines Ringspeichers
+*      ->Entwicklung eines Mini OSs mit Zeitbasis, die Funktionen aufrufen kann
+*      ->SPI Handler vom Pollen nach eingegangenen Daten umstellen auf Interruptbetrieb.
+*            (Hier wurde mit Funktionezeiger SPIHandler realisiert. )
+*      ->AD-Wandlung auf Interruptbetreib umgestellt
+*      ->Einführung von enums um die Lesbarkeit des Programms zu verbesseren in Daten
+*      ->Einbindung eines 16 bit PWMs
+*          (8 bit-PWM auch implementiert und mit entsprechenden Befehl aufrufbar. Siehe pwm.c)
+*      ->Basisfunktionalität wie Setzen, Rücksetzen, Schreiben und Lesen von Pins so wie viele 
+*        andere Funktionen 
+**
+*  Darüber hinaus wurden "Naked Numbers". Falls es  Erweiterung im Kommunikationsprotokoll vorgenommen werden 
+*  soll, kann dies einfach über die Änderung der enum Werte in entsprechenden typedefs der Funktionenvariable. 
+*
+*  Beispiel: Wenn  PWM Duty Cycle von 55 im Kommunikationsprotokoll hinzugefügt werden soll, erfolgt diese 
+*  einfach über Addition von 
+*            Variable DutyCylce65 = 65 in  typdef enum DutyCycle_Value
+*
+*  Die Funktionen und Entwicklungsidee jeder Funktionen sind in jeweiligen .c Datei ausführlich beschrieben. 
+*  Dabei wurde es darauf geachtet, dass dieses Projekt auch ohne dazugehörigen Studienprojekt alleine anhand des
+*  Sourcecodes verständlich ist. 
+*
+*
+*  Es wurde auch Testfunktionen geschreiben, damit die Funktionalität auch ohne den Raspberry Pi getest werden kann.
+*  Diese aber nicht der Teil des Entwicklungsauftrags.  Die sind unter test.c zu finden. 
+*
+* WICHTIG: Wenn man in Atmel Studio Optimization an lässt, kann es dazu führen, dass Ringspeicher nicht funktionert. 
+*  Da der Puffer des Ringspeichers  immer wieder leergeräumt wird. Optimization soll ausgeschaltet bleiben damit
+*  das Projekt wie erwünscht funktionert.  
+*
+* Hier ist  ISR-Routine für SPI so wie AD-Wandlung sowie  in main Datei Aufruf einer Funktion mithilfe des
+* SPIHandler angezeigt. Es ist nun beliebige Erweiterung unter Verwendung der entwickelten Funktionen möglich
+*
+*
+* Autor- Jamakatel 01.2019
+*
+********************************************************************************************************/
+
+//************* Header-Dateien ****************
+
+
 #include<stdio.h>
+#include<stdlib.h>
 #include<stddef.h>
+#include<string.h>
 #include <avr/io.h>
 #include <avr/delay.h>
+#include <avr/interrupt.h>
+
+//************ weitere Include-Dateien *********
+
 
 #include "Ringspeicher.h"
 #include "minios.h"
-#include "SPIHander.h"
+#include "SPIHandler.h"
 #include "pwm.h"
 #include "adc.h"
 
-volatile Telegramm; 
 
-/* To do *
-
-- Make Sure Interrupts fire. 
-- Make Sure SPI Works
-- Make Sures Pins can be set and reset. 
-- Make Sure PWM works. the point of confusion is that both port pins  use different OCCRA and OCCRB. Should it be that way? 
-
-*/
+//**************************************************
 
 
+
+
+//*****************öffentliche Konstanten **********
+
+#define MAX_TELEGRAMM_LAENGE 3  // Maximale Länge des Telegramms.
+#define F_CPU 16000000UL        //CPU Freqeunz
+//**************************************************
+
+
+
+
+//********* nicht öffentliche Strukturen ***********
+
+//**************************************************
+
+
+
+
+//****** nicht öffentliche Typendefinitionen *******
+
+//**************************************************
+
+
+
+
+//************* File-Scope-Variablen ***************
+
+
+
+volatile char Telegramm[MAX_TELEGRAMM_LAENGE];
+uint8_t Ringspeicher_buffer[50];  //Puffer für Ringspeicher
+int ringspeicher_size= 10; 
+
+Ringspeicher_handle_t  Ringspeicher_fuer_adc; //Handle für Ringspeicher
+
+int SPI_transfer_flag = 0; 
+int anzahl_der_eingetroffenen_byte = 0; 
+//************* Interrup Service Routine ***************
 ISR(SPI_STC_vect)
-    {
-    	Telegramm = SPDR;  // ISR for SPI 
-
-    }
-
-
-ISR(TIMER0_COMPB_vect)
-    {
-    	Adcflag = true; /*https://www.avrfreaks.net/forum/solved-adc-autotrigger-timer1a-ctc-interrupt-problem-atmega328p */
-
-    }
-
-int main()
-{	
-	DDRC |= (1<<DDC0);
-    while (1) 
-    {
-	PORTC |= (1<<PORTC0);
-	_delay_ms(1);
-	PORTC &= ~ (1<<PORTC0);
-	_delay_ms(1);
-    }
-
-
-    SPI_SlaveInit(); 
-
-   while(1)
-   {
-
-   	// Get the whole Telegramm 
-   	// check if it is okay
-   	// select the function byte // athawa Ringspeicher laii nai badauxu vanda kheri pani paiiyo. 
-   	// select the data byte 
-   	// give function the parameter and call it 
-   	// if function returns something save it in a ringspiecher  if not void it 
-   	// if ADC_Flag = true
-   	// get the value from ADC. Read the Pins
-   	// 
-   	Ringspeicher_Put_Override(Telegramm[Functionbyte]); 
-
-
-   	fptr funktionausdemtelegramm = Telegramm_Function_Assigner(Ringspeicher_Get_Value()); // Nimmt der Letzte Wert vom Ringspeicher
-   	functionausdemtelegramm(char Telegramm[]); 
-   	OS_Befehlausfuehren(&funktionausdemtelegramm, 1, BLOCKED); 
-
-	// isp c file ma rakhxu chaiyo vaniTo recieve data from SPI https://raspberry-projects.com/pi/programming-in-c/spi/using-the-spi-interface
-
-
-
-
-
-
-
-
-
-   }
-    
-
-	//OS_Befehlgenerieren(&Funktion1, 2,  BLOCKED);   //OS_Rueckmeldung OS_Befehlgenerieren(fncPtr Befehl, uint8_t periodendauer, OS_State dstate )
-	//OS_Befehlgenerieren(&Funktion2, 3, BLOCKED); 
-
-
-	/*Die Funktionen oben generieren die Befehle und speicheren diese Befehle in 
-	  static OS_struct befehl_array[OS_MAX_BEFEHLE_NUM] . Die folgende Funktion führt dann alle 
-	  Befehle die in dieser Array gespeichert sind. */
-
-	//OS_Befehlausfuehren();                     // Führt die Befehle die generiert worden sind aus
-
-
-
-
-
+{
+	
+	anzahl_der_eingetroffenen_byte++; 
+	if(anzahl_der_eingetroffenen_byte > 2)	 // erste Byte Start-Byte zweite Byte ist Adress Byte 3. Byte gibt Anzahl über die Datenlänge Daten ab die wird hier im 
+											// Telegramm aufgenommen. 
+	{
+		  int Telegramm_index=0;
+		  SPI_transfer_flag = 0;  // SPI Transfer Flag gesetzt erst nach Max Telegramm Länge eingetroffen ist.  davor 0 
+		  if(sizeof(Telegramm)==0)  // Erste Datenbyteindex = 0
+		  {
+		  Telegramm_index = 0; 
+		  }
+		else // Index erhöhen 
+		  {
+		  Telegramm_index++; 
+  
+		  }
+		  Telegramm[Telegramm_index] = SPI_SlaveReceive(); // SPI_Datei im Telegramm speichern. 
+		  if(Telegramm_index > MAX_TELEGRAMM_LAENGE ) // Wenn die Länge mehr als 5 ist  wird Array mit nullen gefüllt. 
+		  { SPI_transfer_flag =1; // SPI Transfer Flag gesetzt erst nach Max Telegramm Länge eingetroffen ist.  davor 0 
+			memset(Telegramm, 0, sizeof(Telegramm));
+		  }  
+		  }
 }
 
-/*
-The basic idea is as follows:
-	
-	First the Data Comes in SPI.
-	It triggers an Interrupt. 
-	The Data is the Saved in Ringspeicher. 
-	SPI Interrupt can happen anytime maybe.
-	SPI Handler which returns pointers to the function that has to be executed is called. 
-
-	{
-		Befehlliste is updated with that function . 
-
-	}
-	Betreibsystem(Befehlausführen) is called. ()
-	It also has time parameter. Which means it will call the function periodically
-	int that time. 
-
-	
-
-	Abah K k garna baki xa ta:
-
-		Voli First ma SPI interrupt hunxa ki naii test garnu parxa
-		Tesko lagi Raspberry Lai SPi master banaunu parxa
-		tespaxi tesbata aako data laii halnu parxa
-		
-
-	
+ISR(TIMER0_OVF_vect)
+{
+  uint8_t  x = Get_Adc(Telegramm);
+  Ringspeicher_Put_Override(Ringspeicher_fuer_adc, x); // AD-Wandlung werte im Ringspeicher speicheren 
+}
 
 
+/*Main Function */
+
+int main()
+{
+ Ringspeicher_Init(Ringspeicher_buffer, ringspeicher_size); //Ringspeicher mit der Größe 10
+  SPI_SlaveInit(); 
+
+  {
+    sei(); 
+    while(1)
+    {
+      if(SPI_transfer_flag==0 )
+      {
+        fptr Auszufuehrende_Funktion = Telegramm_Function_Assigner(Telegramm[1]);  // erster Datenbyte enthält Information darüber welche Funtkion aufgerufen werden soll
+        Auszufuehrende_Funktion(Telegramm); // 
+        
+      }
+  
+    }
+    
+  }
 
 
-	*/
+
+  
+}

@@ -25,17 +25,17 @@
 * Globale Variablen gibt es nicht. Das Modul stellt als Schnittstelle öffentliche
 * Funktionen bereit:
 *
-* ringspeicher_handle_t Ringspeicher_init(uint8_t* buffer, size_t size); --> Ringspeicher Init
-* void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher); --> Ringspeicher Leeren 
-* void Ringspeicher_Reset(ringspeicher_handle_t rspeicher);
-* void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data); --> Letze Werte Überschreiben
-* int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data); --> Datei ignorieren bis frei wird. 
-* int Ringspeicher_Get_Value(ringspeicher_handle_t);
-* bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher);
-* bool Ringspeicher_Voll(ringspeicher_handle_t rspeicher);
-* size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher);
-* size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher);
-* void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher);
+* Ringspeicher_handle_t Ringspeicher_init(uint8_t* buffer, size_t size); --> Ringspeicher Init
+* void Ringspeicher_Leeren(Ringspeicher_handle_t rspeicher); --> Ringspeicher Leeren 
+* void Ringspeicher_Reset(Ringspeicher_handle_t rspeicher);
+* void Ringspeicher_Put_Override(Ringspeicher_handle_t rspeicher, uint8_t data); --> Letze Werte Überschreiben
+* int Ringspeicher_Put_Ignore(Ringspeicher_handle_t rspeicher, uint8_t data); --> Datei ignorieren bis frei wird. 
+* int Ringspeicher_Get_Value(Ringspeicher_handle_t);
+* bool Ringspeicher_Leer(Ringspeicher_handle_t rspeicher);
+* bool Ringspeicher_Voll(Ringspeicher_handle_t rspeicher);
+* size_t Ringspeicher_Kapazitaet(Ringspeicher_handle_t rspeicher);
+* size_t Ringspeicher_Size(Ringspeicher_handle_t rspeicher);
+* void Ringspeicher_Ausgabe(Ringspeicher_handle_t rspeicher);
 *
 *
 *
@@ -112,7 +112,7 @@ struct ringspeicher_t  //_t jsut means its "user defined typ
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Inhalt des Ringspeichers ausgeben                                |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t rspeicher                       |
+|              |  Parameter: Ringspeicher_handle_t rspeicher                       |
 |              |  Rückgabewert: void                                               |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -121,7 +121,7 @@ struct ringspeicher_t  //_t jsut means its "user defined typ
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher)
+void Ringspeicher_Ausgabe(Ringspeicher_handle_t rspeicher)
 {
     int c;
     for( c = 0; c < ringspeicher_size(rspeicher); c++)
@@ -140,7 +140,7 @@ void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher)
 |              |  Parameter: uint8_t* buffer: Ort wo die Daten die im Ringspeicher |
 |              |             gespeichert werden sollen, gespeichert sind.          |
 |              |             size_t size   : Größe des Ringspeichers               |
-|              |  Rückgabewert: ringspeicher_handle_t                              |
+|              |  Rückgabewert: Ringspeicher_handle_t                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
 +--------------+-------------------------------------------------------------------+
@@ -148,14 +148,14 @@ void Ringspeicher_Ausgabe(ringspeicher_handle_t rspeicher)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-ringspeicher_handle_t Ringspeicher_Init(uint8_t* buffer, size_t size)
+Ringspeicher_handle_t Ringspeicher_Init(uint8_t* buffer, size_t size)
 {
 
-    ringspeicher_handle_t rspeicher = malloc(sizeof(ringspeicher_t));  // create the pointer data type with malloc and assign the required memory
+    Ringspeicher_handle_t rspeicher = malloc(sizeof(Ringspeicher_t));  // create the pointer data type with malloc and assign the required memory
 
     rspeicher->buffer = buffer;
     rspeicher->max = size;
-    ringspeicher_reset(rspeicher);
+    Ringspeicher_Reset(rspeicher);
     return rspeicher;
 
 
@@ -166,7 +166,7 @@ ringspeicher_handle_t Ringspeicher_Init(uint8_t* buffer, size_t size)
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. Zeiger für Ringspeicher nach vorne rücken        |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  void                                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -175,7 +175,7 @@ ringspeicher_handle_t Ringspeicher_Init(uint8_t* buffer, size_t size)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-static void  Zeiger_Vor(ringspeicher_handle_t rspeicher)   //move the pointer vorwärts if new element is added
+static void  Zeiger_Vor(Ringspeicher_handle_t rspeicher)   //move the pointer vorwärts if new element is added
 {
 
     if (rspeicher->full)
@@ -194,7 +194,7 @@ static void  Zeiger_Vor(ringspeicher_handle_t rspeicher)   //move the pointer vo
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. Zeiger für Ringspeicher nach hinten rücken       |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  void                                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -204,7 +204,7 @@ static void  Zeiger_Vor(ringspeicher_handle_t rspeicher)   //move the pointer vo
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 
-static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope function. Only implemented in this file
+static void Zeiger_Rueck(Ringspeicher_handle_t rspeicher)  // file scope function. Only implemented in this file
 {
     rspeicher->full = false; 							//move the
     rspeicher->tail = (rspeicher->tail + 1) % rspeicher->max;
@@ -217,7 +217,7 @@ static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. Klärt den Ringspeicher                           |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  void                                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -227,7 +227,7 @@ static void Zeiger_Rueck(ringspeicher_handle_t rspeicher)  // file scope functio
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 
-void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher)
+void Ringspeicher_Leeren(Ringspeicher_handle_t rspeicher)
 {
     free(rspeicher);  // deallocates the memoory assigned during creation through malloc
 }
@@ -237,7 +237,7 @@ void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher)
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. Resettet  den Ringspeicher                       |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  void                                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -246,7 +246,7 @@ void Ringspeicher_Leeren(ringspeicher_handle_t rspeicher)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-void Ringspeicher_Reset(ringspeicher_handle_t rspeicher)
+void Ringspeicher_Reset(Ringspeicher_handle_t rspeicher)
 {
     rspeicher->head = 0;
     rspeicher->tail = 0;
@@ -258,7 +258,7 @@ void Ringspeicher_Reset(ringspeicher_handle_t rspeicher)
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. gibt größe des Ringspeichers zurück              |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  size_t                                            |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -267,7 +267,7 @@ void Ringspeicher_Reset(ringspeicher_handle_t rspeicher)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher)
+size_t Ringspeicher_Size(Ringspeicher_handle_t rspeicher)
 {
     size_t size = rspeicher->max;
 
@@ -294,7 +294,7 @@ size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher)
 +--------------+-------------------------------------------------------------------+
 | Beschreibung |  Helferfunktion. gibt maximale Kapazitaet des Ringspeichers       |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  size_t                                            |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -303,7 +303,7 @@ size_t Ringspeicher_Size(ringspeicher_handle_t rspeicher)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher)  //maximum capacity of ringspeicher
+size_t Ringspeicher_Kapazitaet(Ringspeicher_handle_t rspeicher)  //maximum capacity of ringspeicher
 {
     return rspeicher->max;
 
@@ -315,7 +315,7 @@ size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher)  //maximum capac
 |              |       Daten eintreffen und der Ringspeicher voll ist, wird der als| 
 |              |       erste eingetroffenen Datenbyte überschierben                |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t rspeicher, uint8_t data         |
+|              |  Parameter: Ringspeicher_handle_t rspeicher, uint8_t data         |
 |              |  Rückgabewert:  void                                              |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -324,7 +324,7 @@ size_t Ringspeicher_Kapazitaet(ringspeicher_handle_t rspeicher)  //maximum capac
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data) // replace the first data byte //change to other data type to store other data type
+void Ringspeicher_Put_Override(Ringspeicher_handle_t rspeicher, uint8_t data) // replace the first data byte //change to other data type to store other data type
 {
 
     rspeicher->buffer[rspeicher->head] = data;
@@ -338,7 +338,7 @@ void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data) //
 |              |       Daten eintreffen und der Ringspeicher voll ist, wird der als| 
 |              |       erste eingetroffenen Datenbyte überschierben                |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  size_t                                            |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -348,7 +348,7 @@ void Ringspeicher_Put_Override(ringspeicher_handle_t rspeicher, uint8_t data) //
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
 
-int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data)  //ignore the data bytes if ring is full
+int Ringspeicher_Put_Ignore(Ringspeicher_handle_t rspeicher, uint8_t data)  //ignore the data bytes if ring is full
 {
     if (!Ringspeicher_Voll(rspeicher))   // return 0 if transmission is sucessful -1 if not
     {
@@ -364,7 +364,7 @@ int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data)  //ig
 +--------------+-------------------------------------------------------------------+
 |              | Beschreibung: Gibt der erste Wert vom Buffer zurück               |
 |              |                                                                   |
-|              |  Parameter: ringspeicher_handle_t                                 |
+|              |  Parameter: Ringspeicher_handle_t                                 |
 |              |  Rückgabewert:  size_t                                            |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -373,7 +373,7 @@ int Ringspeicher_Put_Ignore(ringspeicher_handle_t rspeicher, uint8_t data)  //ig
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-int  Ringspeicher_Get_Value(ringspeicher_handle_t rspeicher)
+int  Ringspeicher_Get_Value(Ringspeicher_handle_t rspeicher)
 {
     int data;
     if (!Ringspeicher_Leer(rspeicher)) // return 0 if transmission is sucessful 1 if not
@@ -393,7 +393,7 @@ int  Ringspeicher_Get_Value(ringspeicher_handle_t rspeicher)
 |              | Beschreibung: Überprüfen ob Ringspeicher leer ist                 |
 |              |                                                                   |
 |              |                                                                   |
-|              | Parameter: ringspeicher_handle_t                                  |
+|              | Parameter: Ringspeicher_handle_t                                  |
 |              | Rückgabewert:  bool                                               |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -402,7 +402,7 @@ int  Ringspeicher_Get_Value(ringspeicher_handle_t rspeicher)
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher)  //check if the buffer is empty
+bool Ringspeicher_Leer(Ringspeicher_handle_t rspeicher)  //check if the buffer is empty
 {
 
     return(!rspeicher->full && (rspeicher->head == rspeicher->tail));
@@ -413,7 +413,7 @@ bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher)  //check if the buffer i
 +--------------+-------------------------------------------------------------------+
 |              | Beschreibung: Überprüfen ob Ringspeicher voll ist                 |
 |              |                                                                   |
-|              | Parameter: ringspeicher_handle_t                                  |
+|              | Parameter: Ringspeicher_handle_t                                  |
 |              | Rückgabewert:  bool                                               |
 +--------------+-------------------------------------------------------------------+
 |Autor         |  Jamakatel                                                        |
@@ -422,7 +422,7 @@ bool Ringspeicher_Leer(ringspeicher_handle_t rspeicher)  //check if the buffer i
 |              |                                                                   |
 |              |                                                                   |
 +--------------+------------------------------------------------------------------*/
-bool Ringspeicher_Voll(ringspeicher_handle_t rspeicher)
+bool Ringspeicher_Voll(Ringspeicher_handle_t rspeicher)
 {
     return rspeicher->full;
 }

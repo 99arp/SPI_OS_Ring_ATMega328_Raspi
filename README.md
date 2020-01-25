@@ -1,2 +1,0 @@
-# StudienprojektII
-Studienprojekt II 

@@ -68,7 +68,7 @@ typedef enum Pin_Set_Reset {
 
 
 
-enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c); 
+
 
 void Pin_Init(char Telegramm[]); 
 void Pin_Manipulation(char Telegramm[]); 
@@ -76,7 +76,9 @@ int Read_Single_Pin(char  Telegramm[] );
 void Pin_Set_Read_Write(char Telegramm[]); 
 /* static Funtkionen. Vollständigkeithalber erwähnt, Die sind im C datei definert. 
 enum Pin_Number Pin(char Telegramm[]); 
-enum Mode Pin_Function(char c); */
+enum Mode Pin_Function(char c); 
+enum Pin_Set_Reset  Pin_Set_Reset_Funktion(char c); 
+*/
 
  //*************************************************************
 

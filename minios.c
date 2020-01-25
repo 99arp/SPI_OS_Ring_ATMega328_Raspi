@@ -95,6 +95,7 @@
 //************ weitere Include-Dateien *********
 #include <stdint.h>
 #include "minios.h"
+#include <stdbool.h>
 //**************************************************
 
 

@@ -242,7 +242,21 @@ uint8_t Get_Adc(char Telegramm[]) {
   adch = ADCH; // uint wird auf einen char gecastet
   return ((char)adch); // Rückgabe der Auflösung
 }
-
+/*--------------+-----------------------------------------------------------+
+| Name         | Timer0_Init()                                              |
++--------------+------------------------------------------------------------+
+| Beschreibung |  Initialisert Timer0 für zylkklische AD-Wandlung           |
+|              |  Parameter: uint16_t compareMatchRegister                  |
+|              |  Rückgabewert: uint16t                                     |
+|              |                                                            |
+|              |                                                            |
++--------------+------------------------------------------------------------+
+|Autor         |          Jamakatel                                         |
++--------------+------------------------------------------------------------+
+| Notes        | Version 1.0 -- 31.10.2019                                  |
+|              |                                                            |
+|              |                                                            |
++--------------+-----------------------------------------------------------*/
 
 void Timer0_Init( uint16_t  compareMatchRegister){
 
@@ -256,3 +270,14 @@ void Timer0_Init( uint16_t  compareMatchRegister){
   TIMSK0 = ( 1 << OCIE0B); // Timer0_Compare A interrupt. 
   sei();  // enable global interrupts
 }
+
+/*
+
+Beispiel Implementation des Timer0_Interrupts 
+ISR(TIMER0_OVF_vect)
+{
+	uint8_t  x = getAdc();
+	Ringspeicher_Put_Override(Ringspeicher, x); 
+}
+
+/*/

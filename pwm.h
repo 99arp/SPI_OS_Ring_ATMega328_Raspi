@@ -76,10 +76,15 @@ typedef enum Selected_Kanal {
 
 
 
-void Pwm_Init_And_Set_Frequency(char Telegramm[]);
+void Pwm_Init_And_Set_Prescaler(char Telegramm[]);
 
 void Pwm_On(char Telegramm[]);
 void Pwm_Off(char Telegramm[]);
+
+void Pwm_Init_And_Set_Frequency_Timer0(char Telegramm[]);
+
+void Pwm_On_Timer0(char Telegramm[]);
+void Pwm_Off_Timer0(char Telegramm[]);
 
 
 /*static Funtkionen. Vollständigkeithalber erwähnt, Die sind im C datei definert. 
